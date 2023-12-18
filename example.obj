@@ -1,0 +1,43 @@
+mtllib al.mtl # al.mtl is the file that defines the materials used
+
+�
+
+# vertex coordinates
+
+v 8 0 11.0
+
+v 16 0 6
+
+v 3 0 3
+
+
+
+#vertex textures
+
+vt 0.500 -1.352 0.234 #vertex texture
+
+
+
+#vertex normal
+
+vn -0.717798 -0.043116 0.694915
+
+vn -0.322618 -0.014997 0.946410
+
+vn -0.218708 -0.027535 0.975402
+
+
+
+#material for the following face, defined in .mtl file (al.mtl in this example)
+
+usemtl dolph01
+
+
+
+#faces
+
+f 1795//1880 1794//1879 1793//1878
+
+f 1796//1881 1794//1879 1795//1880
+
+f 1797//1882 1796//1881 1795//1880
