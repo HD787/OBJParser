@@ -17,9 +17,15 @@ void parse(char* path){
         printf("%s", temp);
         for(int j=0; j < sizeof(buf); ++j){ buf[j] = 0; }
     }
-
-
 }
+
+typedef struct{
+    float x,y,x,w;
+}vec3;
+
+typedef struct{
+    float u,v,w;
+}texture_coords;
 
 int main(){
     parse("example.obj");
