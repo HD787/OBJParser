@@ -8,7 +8,7 @@ typedef struct{
 
 typedef struct{
     float x,y,z;
-}normals;
+}normal;
 
 typedef struct{
     int vertexIndex;
