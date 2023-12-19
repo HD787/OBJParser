@@ -1,6 +1,6 @@
 typedef struct{
     float x,y,x,w;
-}vec3;
+}vertex;
 
 typedef struct{
     float u,v,w;
