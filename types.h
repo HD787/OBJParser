@@ -1,5 +1,5 @@
 typedef struct{
-    float x,y,x,w;
+    float x,y,z,w;
 }vertex;
 
 typedef struct{
@@ -20,3 +20,7 @@ typedef struct{
     faceVertex * vertices;
     int numVertices;
 }face;
+
+typedef struct{
+    vertex* one,two,three;
+}object;

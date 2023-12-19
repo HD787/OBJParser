@@ -1,11 +1,25 @@
 #include "types.h"
-
-vertex makeVertex(char* str){
-    int quit = 1;
+#include "stdlib.h"
+#include "stdio.h"
+void makeVertex(char* str){
     int i = 2;
-    // walk through string an parse out floats delimited by spaces, ignore starting character in this case 'v'
-    //might be 3 or 4 floats, 2 spaces in a row triggers termination
-    while(quit){
-        //consider nested loops for this;
+    float vals[4];
+    int valcounter = 0;
+    char * endptr;
+    str += 2; 
+    while(*str != '\0' && valcounter < 4){
+        vals[valcounter] = strtof(str, &endptr);
+        ++valcounter;
+        if(*endptr != '\0'){
+            str = endptr + 1;
+        }
+        else{
+            break;
+        }
     }
+}
+//this is done, vals contains the float, figure out what you gotta do
+int main(){
+    char* str = "v 8 0 11.0";
+    makeVertex(str);
 }

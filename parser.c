@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "functions.h"
 #include "types.h"
 void parse(char* path){
     FILE* file = fopen(path, "r");
