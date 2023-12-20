@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include "functions.h"
 #include "types.h"
-void parse(char* path){
+
+void parse(char* path, vertex* vertices, normal* normals, texture* textures){
+    vertices = malloc(sizeof(vertex) * 10);
+    normals = malloc(sizeof(normal) * 10);
+    textures = malloc(sizeof(textures) * 10);
+    int vsize = 10, nsize = 10, tsize = 10;
+    int v = 0, n = 0, t = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -10,21 +16,42 @@ void parse(char* path){
     char buf[100];
     while (fgets(buf, sizeof(buf), file)) {
         char temp[10];
-        //this loop identifies the meaning of the line by pulling out the characters that signify the lines purpose
-        //temp is the purpose
         for(int i = 0; i < 10; ++i){
-            //lines starting with a space and hashtag are to be ignored, the signifier is delimited by a space
             if(buf[i] == ' ' | buf[i] == '#'){
                 break;
             }
             temp[i] = buf[i];
         }
         //vertex
-        if(temp == "v"){}
+        if(temp == "v"){
+            vertex* temp = makeVertex(buf);
+            if(v == vsize){
+                vsize *= 2;
+                realloc(vertices, vsize);
+            }
+            vertices[v] = *temp;
+            ++v;
+        }
         //texture coordinates
-        if(temp == "vt"){}
+        if(temp == "vt"){
+            texture* temp = makeTexture(buf);
+            if(t == tsize){
+                tsize *= 2;
+                realloc(textures, tsize);
+            }
+            textures[t] = *temp;
+            ++temp;
+        }
         //normals
-        if(temp == "vn"){}
+        if(temp == "vn"){
+            normal* temp = makeNormal(buf);
+            if(n == nsize){
+                nsize *= 2;
+                realloc(normals, nsize);
+            }
+            normals[n] = *temp;
+            ++n;
+        }
         //face
         if(temp == "f"){}
         //object name
@@ -47,5 +74,5 @@ void parse(char* path){
 
 
 int main(){
-    parse("example.obj");
+    //parse("example.obj");
 }

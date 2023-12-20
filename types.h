@@ -17,10 +17,11 @@ typedef struct{
 }faceVertex;
 
 typedef struct{
-    faceVertex * vertices;
+    faceVertex * indices;
     int numVertices;
 }face;
 
 typedef struct{
+    char* name;
     vertex* one,two,three;
 }object;

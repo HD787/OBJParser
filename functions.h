@@ -1,6 +1,7 @@
 #include "types.h"
 #include "stdlib.h"
 #include "stdio.h"
+
 vertex* makeVertex(char* str){
     int i = 2;
     float vals[4];
