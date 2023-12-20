@@ -10,16 +10,17 @@ typedef struct{
     float x,y,z;
 }normal;
 
-typedef struct{
-    int vertexIndex;
-    int textureIndex;
-    int normalIndex;
-}faceVertex;
-
-typedef struct{
-    faceVertex * indices;
+typedef struct {
+    int *vertexIndices;
+    int *textureIndices;
+    int *normalIndices;
     int numVertices;
-}face;
+} face;
+
+// typedef struct{
+//     faceVertex * indices;
+//     int numVertices;
+// }face;
 
 typedef struct{
     char* name;
