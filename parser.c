@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "functions.h"
-#include "types.h"
+//#include "types.h"
+#include "string.h"
 
 void parse(char* path, vertex* vertices, normal* normals, texture* textures){
     vertices = malloc(sizeof(vertex) * 10);
@@ -23,46 +24,46 @@ void parse(char* path, vertex* vertices, normal* normals, texture* textures){
             temp[i] = buf[i];
         }
         //vertex
-        if(temp == "v"){
+        if(strcmp(temp, "v")){
             vertex* temp = makeVertex(buf);
             if(v == vsize){
                 vsize *= 2;
-                realloc(vertices, vsize);
+                vertices = realloc(vertices, vsize);
             }
             vertices[v] = *temp;
             ++v;
         }
         //texture coordinates
-        if(temp == "vt"){
+        if(strcmp(temp, "vt")){
             texture* temp = makeTexture(buf);
             if(t == tsize){
                 tsize *= 2;
-                realloc(textures, tsize);
+                textures = realloc(textures, tsize);
             }
             textures[t] = *temp;
             ++temp;
         }
-        //normals
-        if(temp == "vn"){
+        //normals vn
+        if(strcmp(temp,"vn")){
             normal* temp = makeNormal(buf);
             if(n == nsize){
                 nsize *= 2;
-                realloc(normals, nsize);
+                normals = realloc(normals, nsize);
             }
             normals[n] = *temp;
             ++n;
         }
         //face
-        if(temp == "f"){}
+        if(strcmp(temp,"f")){}
         //object name
-        if(temp == "o"){}
+        if(strcmp(temp,"o")){}
         //group name
-        if(temp == "g"){}
+        if(strcmp(temp,"g")){}
         //defnes material to be used until another is specified
-        if(temp == "usemtl"){}
+        if(strcmp(temp,"usemtl")){}
         //smooth shading??
-        if(temp == "s"){}
-        if(temp == "mtllib"){}
+        if(strcmp(temp,"s")){}
+        if(strcmp(temp,"mtllib")){}
 
 
         printf("%s", temp);

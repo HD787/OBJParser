@@ -10,7 +10,7 @@ typedef struct{
     float x,y,z;
 }normal;
 
-typedef struct {
+typedef struct{
     int *vertexIndices;
     int *textureIndices;
     int *normalIndices;

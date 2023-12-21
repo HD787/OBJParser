@@ -65,8 +65,8 @@ normal* makeNormal(char* str){
     return norm;
 }
 
-int main(){
-    char* str = "v 8 0 11.0";
-    vertex* vert = makeVertex(str);
-    printf("%f , %f , %f, %f", vert->x, vert->y, vert->z, vert->w);
-}
+// int main(){
+//     char* str = "v 8 0 11.0";
+//     vertex* vert = makeVertex(str);
+//     printf("%f , %f , %f, %f", vert->x, vert->y, vert->z, vert->w);
+// }
