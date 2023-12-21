@@ -3,7 +3,7 @@
 //#include "types.h"
 #include "string.h"
 
-void parse(char* path, vertex* vertices, normal* normals, texture* textures){
+void parse(char* path, vertex* vertices, texture* textures, normal* normals){
     vertices = malloc(sizeof(vertex) * 10);
     normals = malloc(sizeof(normal) * 10);
     textures = malloc(sizeof(textures) * 10);
@@ -44,7 +44,7 @@ void parse(char* path, vertex* vertices, normal* normals, texture* textures){
             ++temp;
         }
         //normals vn
-        if(strcmp(temp,"vn")){
+        if(strcmp(temp, "vn")){
             normal* temp = makeNormal(buf);
             if(n == nsize){
                 nsize *= 2;
@@ -54,16 +54,16 @@ void parse(char* path, vertex* vertices, normal* normals, texture* textures){
             ++n;
         }
         //face
-        if(strcmp(temp,"f")){}
+        if(strcmp(temp, "f")){}
         //object name
-        if(strcmp(temp,"o")){}
+        if(strcmp(temp, "o")){}
         //group name
-        if(strcmp(temp,"g")){}
+        if(strcmp(temp, "g")){}
         //defnes material to be used until another is specified
-        if(strcmp(temp,"usemtl")){}
+        if(strcmp(temp, "usemtl")){}
         //smooth shading??
-        if(strcmp(temp,"s")){}
-        if(strcmp(temp,"mtllib")){}
+        if(strcmp(temp, "s")){}
+        if(strcmp(temp, "mtllib")){}
 
 
         printf("%s", temp);
@@ -75,5 +75,8 @@ void parse(char* path, vertex* vertices, normal* normals, texture* textures){
 
 
 int main(){
-    //parse("example.obj");
+    vertex* vertices;
+    texture* textures;
+    normal* normals;
+    parse("example.obj", vertices, textures, normals);
 }
