@@ -3,7 +3,7 @@
 //#include "types.h"
 #include "string.h"
 
-void parse(char* path, vertex** vertices, int numVertices, texture** textures, int numTextures, normal** normals, int numNormals){
+void parse(char* path, vertex** vertices, int* numVertices, texture** textures, int* numTextures, normal** normals, int* numNormals){
     *vertices = malloc(sizeof(vertex) * 10);
     *textures = malloc(sizeof(texture) * 10);
     *normals = malloc(sizeof(normal) * 10);
@@ -23,16 +23,16 @@ void parse(char* path, vertex** vertices, int numVertices, texture** textures, i
             }
             temp[i] = buf[i];
         }
-        printf("%s",temp);
         //vertex
+        
         if(strcmp(temp, "v") == 0){
             vertex* vval = makeVertex(buf);
             if(v == vsize){
                 vsize *= 2;
                 *vertices = realloc(*vertices, sizeof(vertex) * vsize);
             }
-            *(vertices)[v] = *vval;
-            ++numVertices;
+            (*vertices)[v] = *vval;
+            ++*numVertices;
             ++v;
         }
         //texture coordinates
@@ -42,8 +42,8 @@ void parse(char* path, vertex** vertices, int numVertices, texture** textures, i
                 tsize *= 2;
                 *textures = realloc(*textures, sizeof(texture) * tsize);
             }
-            *(textures)[t] = *tval;
-            ++numTextures;
+            (*textures)[t] = *tval;
+            ++*numTextures;
             ++t;
         }
         //normals vn
@@ -54,8 +54,8 @@ void parse(char* path, vertex** vertices, int numVertices, texture** textures, i
                 nsize *= 2;
                 *normals = realloc(*normals, sizeof(normal) * nsize);
             }
-            *(normals)[n] = *nval;
-            ++numNormals;
+            (*normals)[n] = *nval;
+            ++*numNormals;
             ++n;
         }
         //face
@@ -73,7 +73,10 @@ void parse(char* path, vertex** vertices, int numVertices, texture** textures, i
 
         //printf("%s", temp);
         memset(buf, 0, sizeof(buf));
+        memset(temp, 0, sizeof(temp));
     }
+    *vertices = realloc(*vertices, *numVertices * sizeof(vertex));
+    *textures = realloc(*textures, *numTextures * sizeof(texture));
+    *normals = realloc(*normals, *numNormals * sizeof(normal));
     fclose(file);
-    printf("here");
 }

@@ -5,10 +5,10 @@ int main(){
     vertex* vertices;
     texture* textures;
     normal* normals;
-    parse("example.obj", &vertices, numVertices, &textures, numTextures, &normals, numNormals);
-    printf("here");
-    printf("%f, %f, %f", vertices[0].x, vertices[0].y, vertices[0].z); 
-    // for(int i = 0; i < numVertices; i++){
-    //     printf("%f, %f, %f", vertices[i].x, vertices[i].y, vertices[i].z);
-    // }
+    parse("largeExample.obj", &vertices, &numVertices, &textures, &numTextures, &normals, &numNormals);
+    printf("%d", numVertices);
+    //printf("%f, %f, %f", vertices[1].x, vertices[1].y, vertices[1].z); 
+    for(int i = 0; i < 100; i++){
+        printf("%f, %f, %f\n", vertices[i].x, vertices[i].y, vertices[i].z);
+    }
 }
