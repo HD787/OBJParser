@@ -22,7 +22,12 @@ typedef struct{
 //     int numVertices;
 // }face;
 
+
 typedef struct{
-    char* name;
-    vertex* one,two,three;
+    float* vertices;
+    int vertexCount;
+    float* normals;
+    int normalCount;
+    float* textures;
+    int textureCount
 }object;
