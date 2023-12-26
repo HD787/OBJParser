@@ -2,11 +2,13 @@
 #include "functions.h"
 //#include "types.h"
 #include "string.h"
+#include
 
-void parse(char* path, vertex** vertices, int* numVertices, texture** textures, int* numTextures, normal** normals, int* numNormals){
-    *vertices = malloc(sizeof(vertex) * 10);
-    *textures = malloc(sizeof(texture) * 10);
-    *normals = malloc(sizeof(normal) * 10);
+void parse(char* path, object** obj){
+    size(path, obj);
+    (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
+    (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
+    (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
     int vsize = 10, nsize = 10, tsize = 10;
     int v = 0, n = 0, t = 0;
     FILE* file = fopen(path, "r");

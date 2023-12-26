@@ -1,16 +1,4 @@
 typedef struct{
-    float x,y,z,w;
-}vertex;
-
-typedef struct{
-    float u,v,w;
-}texture;
-
-typedef struct{
-    float x,y,z;
-}normal;
-
-typedef struct{
     int *vertexIndices;
     int *textureIndices;
     int *normalIndices;
@@ -22,12 +10,11 @@ typedef struct{
 //     int numVertices;
 // }face;
 
-
 typedef struct{
     float* vertices;
-    int vertexCount;
+    int vertexCount = 0;
     float* normals;
-    int normalCount;
+    int normalCount = 0;
     float* textures;
-    int textureCount
+    int textureCount = 0;
 }object;

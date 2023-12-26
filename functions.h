@@ -2,71 +2,75 @@
 #include "stdlib.h"
 #include "stdio.h"
 
-vertex* makeVertex(char* str){
-    int i = 2;
-    float vals[4];
-    int valcounter = 0;
+
+void size(char* path, object** obj){
+    FILE* file = fopen(path, "r");
+    if(file == NULL){
+        printf("no file :(");
+        fclose(file);
+    }
+    char buf[100];
+    while (fgets(buf, sizeof(buf), file)) {
+        char temp[10];
+        for(int i = 0; i < 10; ++i){
+            if(buf[i] == ' ' || buf[i] == '#'){
+                break;
+            }
+            temp[i] = buf[i];
+        }
+        if(strcmp(temp, "v") == 0){
+            *object->vertexCount++;
+        }
+        if(strcmp(temp, "vt") == 0){
+            *object->textureCount++
+        }
+        if(strcmp(temp, "vn") == 0){
+            *object->normalCount++
+        }
+    }
+}
+
+void makeVertex(char* str, int* v, object** obj){
     char * endptr;
     str += 2; 
-    while(*str != '\0' && valcounter < 4){
-        vals[valcounter] = strtof(str, &endptr);
+    while(*str != '\0'){
+        (*obj)->vertices[v] = strtof(str, &endptr);
+        *v++;
         if(*endptr != '\0'){
             str = endptr + 1;
-            ++valcounter;
         }
         else{
             break;
         }
     }
-    vertex* vert = malloc(sizeof(vertex));
-    *vert = (vertex){vals[0], vals[1], vals[2], (valcounter < 4) ? 1.0 : vals[3]};
-    return vert;
 }
 
-texture* makeTexture(char* str){
-    int i = 2;
-    float vals[3];
-    int valcounter = 0;
+void makeTexture(char* str, int* t, object** obj){
     char * endptr;
-    str += 2; 
-    while(*str != '\0' && valcounter < 3){
-        vals[valcounter] = strtof(str, &endptr);
+    str += 3; 
+    while(*str != '\0'){
+        (*obj)->textures[t] = strtof(str, &endptr);
+        *v++;
         if(*endptr != '\0'){
             str = endptr + 1;
-            ++valcounter;
         }
         else{
             break;
         }
     }
-    texture* text = malloc(sizeof(texture));
-    *text = (texture){vals[0], vals[1], (valcounter < 3) ? 1.0 : vals[3]};
-    return text;
 }
 
-normal* makeNormal(char* str){
-   int i = 2;
-    float vals[3];
-    int valcounter = 0;
-    char * endptr;
-    str += 2; 
-    while(*str != '\0' && valcounter < 3){
-        vals[valcounter] = strtof(str, &endptr);
+void makeNormal(char* str, int* n, object** obj){
+   char * endptr;
+    str += 3; 
+    while(*str != '\0'){
+        (*obj)->normals[n] = strtof(str, &endptr);
+        *v++;
         if(*endptr != '\0'){
             str = endptr + 1;
-            ++valcounter;
         }
         else{
             break;
         }
     }
-    normal* norm = malloc(sizeof(normal));
-    *norm = (normal){vals[0], vals[1], vals[2]};
-    return norm;
 }
-
-// int main(){
-//     char* str = "v 8 0 11.0";
-//     vertex* vert = makeVertex(str);
-//     printf("%f , %f , %f, %f", vert->x, vert->y, vert->z, vert->w);
-// }
