@@ -2,13 +2,16 @@
 #include "functions.h"
 //#include "types.h"
 #include "string.h"
-#include
 
 void parse(char* path, object** obj){
     size(path, obj);
-    (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
-    (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
-    (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
+    printf("%i", (*obj)->textureCount);
+    //(*obj)->vertices = malloc(sizeof(float) * ((*obj)->vertexCount + 1));
+    (*obj)->vertices = malloc(sizeof(float) * 1000);
+    //(*obj)->textures = malloc(sizeof(float) * ((*obj)->textureCount + 1));
+    (*obj)->textures = malloc(sizeof(float) * 1000);
+    //(*obj)->normals = malloc(sizeof(float) * ((*obj)->normalCount + 1));
+    (*obj)->normals = malloc(sizeof(float) * 1000);
     int vsize = 10, nsize = 10, tsize = 10;
     int v = 0, n = 0, t = 0;
     FILE* file = fopen(path, "r");
@@ -26,39 +29,16 @@ void parse(char* path, object** obj){
             temp[i] = buf[i];
         }
         //vertex
-        
         if(strcmp(temp, "v") == 0){
-            vertex* vval = makeVertex(buf);
-            if(v == vsize){
-                vsize *= 2;
-                *vertices = realloc(*vertices, sizeof(vertex) * vsize);
-            }
-            (*vertices)[v] = *vval;
-            ++*numVertices;
-            ++v;
+            makeVertex(buf, &v, obj);
         }
         //texture coordinates
         if(strcmp(temp, "vt") == 0){
-            texture* tval = makeTexture(buf);
-            if(t == tsize){
-                tsize *= 2;
-                *textures = realloc(*textures, sizeof(texture) * tsize);
-            }
-            (*textures)[t] = *tval;
-            ++*numTextures;
-            ++t;
+            makeTexture(buf, &t, obj);
         }
         //normals vn
         if(strcmp(temp, "vn") == 0){
-            normal* nval = makeNormal(buf);
-            if(n == nsize){
-                
-                nsize *= 2;
-                *normals = realloc(*normals, sizeof(normal) * nsize);
-            }
-            (*normals)[n] = *nval;
-            ++*numNormals;
-            ++n;
+            makeNormal(buf, &n, obj);
         }
         //face
         if(strcmp(temp, "f")){}
@@ -77,8 +57,5 @@ void parse(char* path, object** obj){
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
-    *vertices = realloc(*vertices, *numVertices * sizeof(vertex));
-    *textures = realloc(*textures, *numTextures * sizeof(texture));
-    *normals = realloc(*normals, *numNormals * sizeof(normal));
     fclose(file);
 }
