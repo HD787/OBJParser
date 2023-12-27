@@ -20,6 +20,7 @@ void size(char* path, object** obj){
             if(buf[i] == ' ' || buf[i] == '#'){
                 break;
             }
+
             temp[i] = buf[i];
         }
         if(strcmp(temp, "v") == 0){
@@ -31,12 +32,15 @@ void size(char* path, object** obj){
         if(strcmp(temp, "vn") == 0){
             (*obj)->normalCount++;
         }
+        memset(temp, 0, sizeof(temp));
+        memset(buf, 0, sizeof(buf));
     }
     (*obj)->vertexCount *= 3;
     (*obj)->textureCount *= 3;
     (*obj)->normalCount *= 3;
-
 }
+
+
 
 void makeVertex(char* str, int* v, object** obj){
     char * endptr;
@@ -69,7 +73,7 @@ void makeTexture(char* str, int* t, object** obj){
 }
 
 void makeNormal(char* str, int* n, object** obj){
-   char * endptr;
+    char * endptr;
     str += 3; 
     while(*str != '\0'){
         (*obj)->normals[*n] = strtof(str, &endptr);

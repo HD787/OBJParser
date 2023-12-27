@@ -6,13 +6,10 @@
 void parse(char* path, object** obj){
     size(path, obj);
     printf("%i", (*obj)->textureCount);
-    //(*obj)->vertices = malloc(sizeof(float) * ((*obj)->vertexCount + 1));
-    (*obj)->vertices = malloc(sizeof(float) * 1000);
-    //(*obj)->textures = malloc(sizeof(float) * ((*obj)->textureCount + 1));
-    (*obj)->textures = malloc(sizeof(float) * 1000);
-    //(*obj)->normals = malloc(sizeof(float) * ((*obj)->normalCount + 1));
-    (*obj)->normals = malloc(sizeof(float) * 1000);
-    int vsize = 10, nsize = 10, tsize = 10;
+    (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
+    (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
+    (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
+
     int v = 0, n = 0, t = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
@@ -52,8 +49,6 @@ void parse(char* path, object** obj){
         if(strcmp(temp, "s")){}
         if(strcmp(temp, "mtllib")){}
 
-
-        //printf("%s", temp);
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
