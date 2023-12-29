@@ -40,7 +40,12 @@ void size(char* path, object** obj){
     (*obj)->normalCount *= 3;
 }
 
-
+void delete(object** obj){
+    free((*obj)->vertices);
+    free((*obj)->textures);
+    free((*obj)->normals);
+    free((*obj));
+}
 
 void makeVertex(char* str, int* v, object** obj){
     char * endptr;
