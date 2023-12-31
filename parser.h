@@ -14,6 +14,7 @@ void parse(char* path, object** obj){
     if(file == NULL){
         printf("no file :(");
         fclose(file);
+        return;
     }
     char buf[100];
     while (fgets(buf, sizeof(buf), file)) {

@@ -2,11 +2,13 @@
 #include "stdio.h"
 int main(){
     object* obj = malloc(sizeof(object));
-    parse("temp.obj", &obj);
+    parse("largeExample.obj", &obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
-    //printf("%i", obj->vertexCount);
-    for(int i = 0; i < 10; i++){
-        printf("%f\n", obj->vertices[i]);
-    }
+    printf("%i\n", obj->vertexCount);
+    printf("%i\n", obj->normalCount);
+    printf("%i", obj->textureCount);
+    // for(int i = 0; i < obj->vertexCount; i++){
+    //     printf("%f\n", obj->vertices[i]);
+    // }
     delete(&obj);
 } 
