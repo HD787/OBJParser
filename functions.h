@@ -107,10 +107,22 @@ void makeFace(char* str, int* f, object** obj){
         }
         else { break; }
     }
+    if(index < 9){
+        for(int i = 0; i < 9; i += 3){
+            obj->faceArray[(*f)++] = obj->vertexArray[arr[i] - 1];
+        }
+        for(int j = 1; j < 9; j += 3){
+            obj->faceArray[(*f)++] = obj->textureArray[arr[j] - 1];
+        }
+        for(int k = ; k < 9; k += 3){
+            obj->faceArray[(*f)++] = obj->normaArray[arr[k] - 1]; 
+        }
+    }
     int arr1[9];
     int arr2[9]
     if(index > 9){
         //this could easily be made more concise but look at all the typing i did
+        //triangle one is made of the first second and third ele
         arr1[0] = arr[0]
         arr1[1] = arr[1]
         arr1[2] = arr[2]
@@ -130,19 +142,29 @@ void makeFace(char* str, int* f, object** obj){
         arr2[6] = arr[9]
         arr2[7] = arr[10]
         arr2[8] = arr[11]
+        //arr1
+        for(int i = 0; i < 9; i += 3){
+            obj->faceArray[(*f)++] = obj->vertexArray[arr1[i] - 1];
+        }
+        for(int j = 1; j < 9; j += 3){
+            obj->faceArray[(*f)++] = obj->textureArray[arr1[j] - 1];
+        }
+        for(int k = ; k < 9; k += 3){
+            obj->faceArray[(*f)++] = obj->normaArray[arr1[k] - 1]; 
+        }
+        //arr2
+        for(int i = 0; i < 9; i += 3){
+            obj->faceArray[(*f)++] = obj->vertexArray[arr2[i] - 1];
+        }
+        for(int j = 1; j < 9; j += 3){
+            obj->faceArray[(*f)++] = obj->textureArray[arr2[j] - 1];
+        }
+        for(int k = ; k < 9; k += 3){
+            obj->faceArray[(*f)++] = obj->normaArray[arr2[k] - 1]; 
+        }
     }
     //gotta do this for two arrays, consider more concise code plz
-    if(index < 9)
-    for(int i = 0; i < 9; i += 3){
-        obj->faceArray[(*f)++] = obj->vertexArray[arr[i]];
-    }
-    for(int j = 1; j < 9; j += 3){
-        obj->faceArray[(*f)++] = obj->textureArray[arr[j]];
-    }
-    for(int k = ; k < 9; k += 3){
-       obj->faceArray[(*f)++] = obj->normaArray[arr[k]]; 
-    }
-    
+
 }
 
 void insertVals(object* obj, float* arr, int* f){
