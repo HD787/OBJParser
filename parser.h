@@ -9,7 +9,7 @@ void parse(char* path, object** obj){
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
 
-    int v = 0, n = 0, t = 0;
+    int v = 0, n = 0, t = 0 f = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -38,7 +38,9 @@ void parse(char* path, object** obj){
             makeNormal(buf, &n, obj);
         }
         //face
-        if(strcmp(temp, "f")){}
+        if(strcmp(temp, "f")){
+            makeFace(buf, &f, obj);
+        }
         //object name
         if(strcmp(temp, "o")){}
         //group name

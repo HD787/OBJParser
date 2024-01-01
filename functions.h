@@ -91,3 +91,60 @@ void makeNormal(char* str, int* n, object** obj){
         }
     }
 }
+//faces are going to represent your triangles (maybe quads??)
+//so parse out 3 vertices, then 3 textures, then 3 normals all into one array (maybe 4 of each??) 
+//this will be your VBO, make VAOs accordingly
+//this parser will be able to handle up to quads, nothing more
+void makeFace(char* str, int* f, object** obj){
+    int arr[12];
+    int index = 0;
+    char * endptr;
+    str += 2;
+    while(*str != '\0'){
+        arr[index] = strtol(str, &endptr, 10);
+        if(*endptr != '\0'){
+            str = endptr + 1;
+        }
+        else { break; }
+    }
+    int arr1[9];
+    int arr2[9]
+    if(index > 9){
+        //this could easily be made more concise but look at all the typing i did
+        arr1[0] = arr[0]
+        arr1[1] = arr[1]
+        arr1[2] = arr[2]
+        arr1[3] = arr[3]
+        arr1[4] = arr[4]
+        arr1[5] = arr[5]
+        arr1[6] = arr[6]
+        arr1[7] = arr[7]
+        arr1[8] = arr[8]
+
+        arr2[0] = arr[0]
+        arr2[1] = arr[1]
+        arr2[2] = arr[2]
+        arr2[3] = arr[6]
+        arr2[4] = arr[7]
+        arr2[5] = arr[8]
+        arr2[6] = arr[9]
+        arr2[7] = arr[10]
+        arr2[8] = arr[11]
+    }
+    //gotta do this for two arrays, consider more concise code plz
+    if(index < 9)
+    for(int i = 0; i < 9; i += 3){
+        obj->faceArray[(*f)++] = obj->vertexArray[arr[i]];
+    }
+    for(int j = 1; j < 9; j += 3){
+        obj->faceArray[(*f)++] = obj->textureArray[arr[j]];
+    }
+    for(int k = ; k < 9; k += 3){
+       obj->faceArray[(*f)++] = obj->normaArray[arr[k]]; 
+    }
+    
+}
+
+void insertVals(object* obj, float* arr, int* f){
+    
+}

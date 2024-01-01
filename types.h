@@ -5,4 +5,7 @@ typedef struct{
     int normalCount;
     float* textures;
     int textureCount;
+
+    float* faceArray;
+    
 }object;
