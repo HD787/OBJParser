@@ -6,6 +6,7 @@ typedef struct{
     float* textures;
     int textureCount;
 
-    float* faceArray;
+    float* faces;
+    int faceCount;
     
 }object;
