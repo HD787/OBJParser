@@ -5,6 +5,7 @@
 
 void parse(char* path, object** obj){
     size(path, obj);
+    setFlags(path, obj);
     (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);

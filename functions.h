@@ -3,6 +3,9 @@
 #include "stdio.h"
 #include <string.h>
 
+#define TEXTURES (1 << 0)
+#define NORMALS (1 << 1)
+
 
 void size(char* path, object** obj){
     (*obj)->vertexCount = 0;
@@ -13,9 +16,10 @@ void size(char* path, object** obj){
     if(file == NULL){
         printf("no file :(");
         fclose(file);
+        return;
     }
     char buf[100];
-    while (fgets(buf, sizeof(buf), file)) {
+    while(fgets(buf, sizeof(buf), file)) {
         char temp[10];
         for(int i = 0; i < 10; ++i){
             if(buf[i] == ' ' || buf[i] == '#')
@@ -193,5 +197,40 @@ void makeFace(char* str, int* f, object** obj){
         for(int k = 2; k < 9; k += 3){
             //(*obj)->faces[(*f)++] = (*obj)->normals[arr2[k] - 1]; 
         }
+    }
+}
+
+void setFlags(char* path, obj** object){
+    (*obj)->flags = 0;
+    FILE* file = fopen(path, "r");
+    if(file == NULL){
+        printf("no file :(");
+        fclose(file);
+        return;
+    }
+    char buf[100];
+    while(fgets(buf, sizeof(buf), file)){
+        if(buf[0] != 'f') continue;
+        else break;
+    }
+    fclose(file);
+    for(int i = 0; i < sizeof(buf); i++){
+        int first = 0; 
+        if(buf[i] == ' ') break;
+        if(buf[i] == '/' && first == 0){
+            if(buf[i+1] == '/'){
+                (*obj)->flags |= NORMALS;
+                break;
+            }
+            else {
+                first = 1;
+                (*obj)->flags |= TEXTURES;
+                continue;
+            }
+        }
+        if(buf[i] == '/' && first == 1){
+            (*obj)->flags = (TEXTURES | NORMALS);
+        }
+
     }
 }
