@@ -124,7 +124,6 @@ void makeFace(char* str, int* f, object** obj){
 
         else{
             arr[index] = val;
-            printf("%i, %i\n", val, index);
             index++;
         }
         //printf("%li\n", strtol(str, &endptr, 10));
@@ -134,12 +133,6 @@ void makeFace(char* str, int* f, object** obj){
         }
         else break; 
     }
-    //
-    for(int i = 0; i < 12; i++){
-        printf("%i, ", arr[i]);
-    }
-    printf("end\n");
-    //
     if(index < 9){
         for(int i = 0; i < 9; i += 3){
             //(*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
@@ -200,7 +193,7 @@ void makeFace(char* str, int* f, object** obj){
     }
 }
 
-void setFlags(char* path, obj** object){
+void setFlags(char* path, object** obj){
     (*obj)->flags = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
@@ -214,22 +207,26 @@ void setFlags(char* path, obj** object){
         else break;
     }
     fclose(file);
-    for(int i = 0; i < sizeof(buf); i++){
-        int first = 0; 
-        if(buf[i] == ' ') break;
-        if(buf[i] == '/' && first == 0){
+    for(int i = 2; i < sizeof(buf); i++){
+        printf("%c\n", buf[i]);
+        int seenFirstSlash = 0; 
+        if(buf[i] == ' ') {break; printf("uh oh");}
+        if(buf[i] == '/' && seenFirstSlash == 0){
             if(buf[i+1] == '/'){
                 (*obj)->flags |= NORMALS;
+                printf("\n%i, success", (*obj)->flags);
                 break;
             }
             else {
-                first = 1;
+                seenFirstSlash = 1;
                 (*obj)->flags |= TEXTURES;
+                printf("nah");
                 continue;
             }
         }
-        if(buf[i] == '/' && first == 1){
-            (*obj)->flags = (TEXTURES | NORMALS);
+        if(buf[i] == '/' && seenFirstSlash == 1){
+            (*obj)->flags |= (NORMALS);
+            printf("huh");
         }
 
     }
