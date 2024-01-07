@@ -207,9 +207,8 @@ void setFlags(char* path, object** obj){
         else break;
     }
     fclose(file);
+    int seenFirstSlash = 0; 
     for(int i = 2; i < sizeof(buf); i++){
-        printf("%c\n", buf[i]);
-        int seenFirstSlash = 0; 
         if(buf[i] == ' ') {break; printf("uh oh");}
         if(buf[i] == '/' && seenFirstSlash == 0){
             if(buf[i+1] == '/'){
@@ -220,7 +219,7 @@ void setFlags(char* path, object** obj){
             else {
                 seenFirstSlash = 1;
                 (*obj)->flags |= TEXTURES;
-                printf("nah");
+                printf("nah\n");
                 continue;
             }
         }

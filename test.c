@@ -9,12 +9,12 @@ void printBinary(unsigned int num) {
 
 int main(){
     object* obj = malloc(sizeof(object));
-    parse("cube.obj", &obj);
+    parse("largeExample.obj", &obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
-    printf("%i\n", obj->vertexCount);
-    printf("%i\n", obj->normalCount);
-    printf("%i\n", obj->textureCount);
-    printf("%i\n", obj->faceCount);
+    // printf("%i\n", obj->vertexCount);
+    // printf("%i\n", obj->normalCount);
+    // printf("%i\n", obj->textureCount);
+    // printf("%i\n", obj->faceCount);
     printf("%d, here", obj->flags);
     //printBinary(obj->flags);
     // for(int i = 0; i < obj->vertexCount; i++){
