@@ -9,7 +9,7 @@ void printBinary(unsigned int num) {
 
 int main(){
     object* obj = malloc(sizeof(object));
-    parse("largeExample.obj", &obj);
+    parse("cube.obj", &obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
     // printf("%i\n", obj->vertexCount);
     // printf("%i\n", obj->normalCount);

@@ -10,7 +10,6 @@ typedef struct{
 
     float* faces;
     int faceCount;
-
     unsigned int flags;
     
 }object;
