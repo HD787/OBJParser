@@ -108,26 +108,6 @@ void makeNormal(char* str, int* n, object** obj){
 }
 
 
-//faces are going to represent your triangles (maybe quads??)
-//so parse out 3 vertices, then 3 textures, then 3 normals all into one array (maybe 4 of each??) 
-//this will be your VBO, make VAOs accordingly
-//this parser will be able to handle up to quads, nothing more
-void makeFace(char* str, int* f, object** obj){
-    int faceCount = 0;
-    for(int i = 2; i < 100; i++){
-        if(str[i] == '\n'){
-            faceCount++;
-            break;
-        } 
-        if(str[i] == ' '){
-            faceCount++;
-            if(str[i+1] == ' ' || str[i+1] == '\n') break;
-        }
-    }
-    if(faceCount == 3) makeTri(str, f, obj);
-    if(faceCount == 4) makeQuad(str, f, obj);
-}
-
 void makeQuad(char* str, int* f, object** obj){
     if((*obj)->flags == 0){}
     if((*obj)->flags == 1){}
@@ -146,8 +126,90 @@ void makeTri(char* str, int* f, object** obj){
             unsigned int val;
             val = strtoul(str, &endptr, 10);
             if(val == 0){ 
-                printf("parsed 0 in face indices");
-                break;
+                ;
+            }
+            else{
+               arr[index] = val;
+               index++; 
+            }
+            if(*endptr != '\0'){
+                str = endptr + 1;
+            } else break;
+        }
+        for(int i = 0; i < 3; i++){
+            (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
+            printf("%c", arr[i]);
+        }
+    }
+    //textures only
+    if((*obj)->flags == 1){
+        int arr[6];
+        int index = 0;
+        str += 2;
+        char * endptr;
+        while(*str != '\0'){
+            unsigned int val;
+            val = strtoul(str, &endptr, 10);
+            if(val == 0){ 
+                ;
+            }
+            else{
+               arr[index] = val;
+               index++; 
+            }
+            if(*endptr != '\0'){
+                str = endptr + 1;
+            } else break;
+        }
+        for(int i = 0; i < 6; i++){
+            (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
+            printf("%c", arr[i]);
+        }
+    }
+    //normals only
+    if((*obj)->flags == 2){
+        unsigned long arr[6];
+        int index = 0;
+        str += 2;
+        char * endptr;
+        while(*str != '\0'){
+            unsigned int val;
+            val = strtoul(str, &endptr, 10);
+            printf("%i", val);
+            if(val == 0){ 
+                ;
+            }
+            else{
+               arr[index] = val;
+               index++; 
+            }
+            if(*endptr != '\0'){
+                str = endptr + 1;
+                if(*str == '/'){
+                    str++;
+                }
+                //printf("%c\n", *endptr);
+            } else break;
+        }
+        for(int i = 0; i < 6; i+=2){
+            (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
+            printf(" %f\n ", (*obj)->vertices[arr[i] - 1]);
+        }
+        for(int i = 1; i < 6; i += 2){
+           (*obj)->faces[(*f)++] = (*obj)->normals[arr[i] - 1]; 
+        }
+    } 
+    //normals and textures
+    if((*obj)->flags == 3){
+        int arr[9];
+        int index = 0;
+        str += 2;
+        char * endptr;
+        while(*str != '\0'){
+            unsigned int val;
+            val = strtoul(str, &endptr, 10);
+            if(val == 0){ 
+                ;
             }
             else{
                arr[index] = val;
@@ -158,16 +220,11 @@ void makeTri(char* str, int* f, object** obj){
                 printf("%c\n", *endptr);
             } else break;
         }
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 9; i++){
             (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
+            printf("%c", arr[i]);
         }
     }
-    //textures only
-    if((*obj)->flags == 1){}
-    //normals only
-    if((*obj)->flags == 2){}
-    //normals and textures
-    if((*obj)->flags == 3){}
 }
 // void makeFace(char* str, int* f, object** obj){
 //     int arr[12];
@@ -253,6 +310,21 @@ void makeTri(char* str, int* f, object** obj){
 //         }
 //     }
 // }
+void makeFace(char* str, int* f, object** obj){
+    int faceCount = 0;
+    for(int i = 2; i < 100; i++){
+        if(str[i] == '\n'){
+            faceCount++;
+            break;
+        } 
+        if(str[i] == ' '){
+            faceCount++;
+            if(str[i+1] == ' ' || str[i+1] == '\n') break;
+        }
+    }
+    if(faceCount == 3) makeTri(str, f, obj);
+    if(faceCount == 4) makeQuad(str, f, obj);
+}
 
 void setFlags(char* path, object** obj){
     (*obj)->flags = 0;
@@ -271,23 +343,20 @@ void setFlags(char* path, object** obj){
     //this will check to see what values are present.
     int seenFirstSlash = 0; 
     for(int i = 2; i < sizeof(buf); i++){
-        if(buf[i] == ' ') {break; printf("uh oh");}
+        if(buf[i] == ' ') break;
         if(buf[i] == '/' && seenFirstSlash == 0){
             if(buf[i+1] == '/'){
                 (*obj)->flags |= NORMALS;
-                printf("\n%i, success", (*obj)->flags);
-                break;
+                 break;
             }
             else {
                 seenFirstSlash = 1;
                 (*obj)->flags |= TEXTURES;
-                printf("nah\n");
                 continue;
             }
         }
         if(buf[i] == '/' && seenFirstSlash == 1){
             (*obj)->flags |= (NORMALS);
-            printf("huh");
         }
 
     }
