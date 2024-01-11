@@ -5,14 +5,29 @@
 
 #define TEXTURES (1 << 0)
 #define NORMALS (1 << 1)
-#define TRIPLETEXTURE ( 1 << 2)
+#define TRIPLETEXTURE (1 << 2)
 
 
 void size(char* path, object** obj){
     (*obj)->vertexCount = 0;
+    (*obj)->vertexElementCount = 3;
+
     (*obj)->textureCount = 0;
+    (*obj)->textureElementCount = 0;
+    if((*obj)->flags & TRIPLETEXTURE){
+        (*obj)->textureElementCount = 3;
+    }
+    else (*obj)->textureCount = 2; 
+
     (*obj)->normalCount = 0;
+    (*obj)->normalElementCount = 3;
+
     (*obj)->faceCount = 0;
+    (*obj)->faceElementCount = 3;
+    if((*obj)->flags & NORMALS) (*obj)->faceElementCount += 3;
+    if((*obj)->flags & TRIPLETEXTURE) (*obj)->faceElementCount += 3;
+    if(!((*obj)->flags & TRIPLETEXTURE) && (*obj)->flags & TEXTURES) (*obj)->faceElementCount += 2;
+
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -29,39 +44,34 @@ void size(char* path, object** obj){
         if(strcmp(temp, "v") == 0)
             (*obj)->vertexCount += 3;
 
-        if(strcmp(temp, "vt") == 0)
+        if(strcmp(temp, "vt") == 0){
             (*obj)->textureCount++;
-
+            if((*obj)->flags & TRIPLETEXTURE){
+                (*obj)->textureElementCount += 3;
+            }else (*obj)->textureCount += 2; 
+        }
         if(strcmp(temp, "vn") == 0)
             (*obj)->normalCount += 3;
 
         if(strcmp(temp, "f") == 0){
-            int prev = 0;
             int count = 0;
             for(int i = 2; i < 100; i++){
                 if(buf[i] != ' '){
-                    prev = 0;
                     continue;
                 }
-                if(buf[i] == ' ' && prev == 0){
+                if(buf[i] == ' ' ){
                     ++count;
-                    prev = 1;
                 }
-                if(buf[i] == ' ' && prev == 1) 
+                if(buf[i] == '\n') 
                     break;
             }
-            if(count == 4)
-            //HARDCODED FOR NO TEXTURE
-                (*obj)->faceCount += 10;
-            else 
-                (*obj)->faceCount += 5;
+            if(count == 2) (*obj)->faceCount++;
+            if(count == 3) (*obj)->faceCount += 2;
         }
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));
     }
-    (*obj)->vertexCount *= 3;
-    (*obj)->textureCount *= 3;
-    (*obj)->normalCount *= 3;
+   
 }
 
 void delete(object** obj){
@@ -281,11 +291,25 @@ void setFlags(char* path, object** obj){
         return;
     }
     char buf[100];
+    char textureBuffer[100];
+    int foundTexture = 0;
     while(fgets(buf, sizeof(buf), file)){
+        if(buf[1] == 't' && foundTexture == 0){ 
+            foundTexture = 1;  
+            memcpy(textureBuffer, buf, sizeof(buf));}
         if(buf[0] != 'f') continue;
         else break;
     }
     fclose(file);
+
+    unsigned short textureCount = 0;
+    if(foundTexture == 1){
+        for(int i = 3; i < 100; i++){
+            if(textureBuffer[i] == ' ')textureCount++;
+        }
+    }
+    if(textureCount == 2) (*obj)->flags |= TRIPLETEXTURE;
+
     //this will check to see what values are present.
     int seenFirstSlash = 0; 
     for(int i = 2; i < sizeof(buf); i++){
@@ -304,17 +328,6 @@ void setFlags(char* path, object** obj){
         if(buf[i] == '/' && seenFirstSlash == 1){
             (*obj)->flags |= (NORMALS);
         }
-
-    }
-    switch((*obj)->flags){
-        case 0:
-            (*obj)->faceElementCount = 1;
-        case 1:
-            (*obj)->faceElementCount = 2;
-        case 2:
-            (*obj)->faceElementCount = 2;
-        case 3:
-            (*obj)->faceElementCount = 3;
 
     }
 }

@@ -4,12 +4,13 @@
 #include "string.h"
 
 void parse(char* path, object** obj){
-    size(path, obj);
     setFlags(path, obj);
-    printf("%i", (*obj)->faceCount);
-    (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
-    (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
-    (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
+    size(path, obj);
+    printf("%i\n", (*obj)->faceCount);
+    printf("%i", (*obj)->faceElementCount);
+    (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount * (*obj)->vertexElementCount);
+    (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount * (*obj)->textureElementCount);
+    (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount * (*obj)->normalElementCount);
     //(*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount * (*obj)->faceElementCount);
     (*obj)->faces = malloc(sizeof(float) * 1000);
 

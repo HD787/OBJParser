@@ -17,9 +17,9 @@ int main(){
     // printf("%i\n", obj->faceCount);
     //printf("%d, here", obj->flags);
     //printBinary(obj->flags);
-    for(int i = 0; i < obj->faceCount; i++){
+    for(int i = 0; i < obj->faceCount * obj->faceElementCount; i++){
         printf("%f\n", obj->faces[i]);
     }
-    printf("%f\n", obj->faces[6]);
+    //printf("%f\n", obj->faces[6]);
     delete(&obj);
 } 
