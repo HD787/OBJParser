@@ -5,6 +5,7 @@
 
 #define TEXTURES (1 << 0)
 #define NORMALS (1 << 1)
+#define TRIPLETEXTURE ( 1 << 2)
 
 
 void size(char* path, object** obj){
@@ -22,18 +23,17 @@ void size(char* path, object** obj){
     while(fgets(buf, sizeof(buf), file)) {
         char temp[10];
         for(int i = 0; i < 10; ++i){
-            if(buf[i] == ' ' || buf[i] == '#')
-                break;
+            if(buf[i] == ' ' || buf[i] == '#') break;
             temp[i] = buf[i];
         }
         if(strcmp(temp, "v") == 0)
-            (*obj)->vertexCount++;
+            (*obj)->vertexCount += 3;
 
         if(strcmp(temp, "vt") == 0)
             (*obj)->textureCount++;
 
         if(strcmp(temp, "vn") == 0)
-            (*obj)->normalCount++;
+            (*obj)->normalCount += 3;
 
         if(strcmp(temp, "f") == 0){
             int prev = 0;
@@ -51,9 +51,10 @@ void size(char* path, object** obj){
                     break;
             }
             if(count == 4)
-                (*obj)->faceCount += 2;
+            //HARDCODED FOR NO TEXTURE
+                (*obj)->faceCount += 10;
             else 
-                (*obj)->faceCount++;
+                (*obj)->faceCount += 5;
         }
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));
@@ -138,8 +139,8 @@ void makeTri(char* str, int* f, object** obj){
                 str = endptr + 1;
             } else break;
         }
-        for(int i = 0; i < 3; i++){
-            (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
+        for(int i = 0; i < 3; i += 2){
+            
             //printf("%c", arr[i]);
         }
     }
@@ -194,8 +195,15 @@ void makeTri(char* str, int* f, object** obj){
             } else break;
         }
         for(int i = 0; i < 6; i+=2){
-            (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[arr[i + 1] - 1];
+            unsigned long vertexIndex = (arr[i] - 1) * 3;
+            unsigned long normalIndex = (arr[i + 1] - 1) * 3;
+            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
+            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
+            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+
+            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
+            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
+            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
             //printf(" %i\n ", i);
         }
     } 
@@ -226,50 +234,9 @@ void makeTri(char* str, int* f, object** obj){
         }
     }
 }
-// void makeFace(char* str, int* f, object** obj){
-//     int arr[12];
-//     int index = 0;
-//     int space = 0;
-//     char * endptr;
-//     str += 2;
-//     while(*str != '\0'){
-//         int val;
-//         val = strtoul(str, &endptr, 10);
-//         if(val == 0){
-//             ;
-//         }
-
-//         else{
-//             arr[index] = val;
-//             index++;
-//         }
-//         //printf("%li\n", strtol(str, &endptr, 10));
-//         if(*endptr != '\0'){
-//             str = endptr + 1;
-//             //printf("%c\n", *endptr);
-//         }
-//         else break; 
-//     }
-//     printf(" %i spaces", space);
-//     if(index < 9){
-//         for(int i = 0; i < 9; i += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
-//             //printf("%i\n", arr[i] - 1);
-//         }
-//         for(int j = 1; j < 9; j += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->textures[arr[j] - 1];
-//             //printf("%f\n", (*obj)->textures[arr[j] - 1]);
-//         }
-//         for(int k = 2; k < 9; k += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->normals[arr[k] - 1]; 
-//         }
-//     }
-//     int arr1[9];
-//     int arr2[9];
-//     if(index > 9){
-//         //this could easily be made more concise but look at all the typing i did
-//         //triangle one is made of the first second and third elements
-//         //triangle two is make for first third and fourth
+//this could easily be made more concise but look at all the typing i did
+//triangle one is made of the first second and third elements
+//triangle two is make for first third and fourth
 //         arr1[0] = arr[0];
 //         arr1[1] = arr[1];
 //         arr1[2] = arr[2];
@@ -289,27 +256,6 @@ void makeTri(char* str, int* f, object** obj){
 //         arr2[6] = arr[9];
 //         arr2[7] = arr[10];
 //         arr2[8] = arr[11];
-//         for(int i = 0; i < 9; i += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->vertices[arr1[i] - 1];
-//         }
-//         for(int j = 1; j < 9; j += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->textures[arr1[j] - 1];
-//         }
-//         for(int k = 2; k < 9; k += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->normals[arr1[k] - 1]; 
-//         }
-//         //arr2
-//         for(int i = 0; i < 9; i += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->vertices[arr2[i] - 1];
-//         }
-//         for(int j = 1; j < 9; j += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->textures[arr2[j] - 1];
-//         }
-//         for(int k = 2; k < 9; k += 3){
-//             //(*obj)->faces[(*f)++] = (*obj)->normals[arr2[k] - 1]; 
-//         }
-//     }
-// }
 void makeFace(char* str, int* f, object** obj){
     int faceCount = 0;
     for(int i = 2; i < 100; i++){
@@ -358,6 +304,17 @@ void setFlags(char* path, object** obj){
         if(buf[i] == '/' && seenFirstSlash == 1){
             (*obj)->flags |= (NORMALS);
         }
+
+    }
+    switch((*obj)->flags){
+        case 0:
+            (*obj)->faceElementCount = 1;
+        case 1:
+            (*obj)->faceElementCount = 2;
+        case 2:
+            (*obj)->faceElementCount = 2;
+        case 3:
+            (*obj)->faceElementCount = 3;
 
     }
 }

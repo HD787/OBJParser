@@ -10,8 +10,8 @@ void parse(char* path, object** obj){
     (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
-    //(*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount);
-    (*obj)->faces = malloc(sizeof(float) * 100);
+    //(*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount * (*obj)->faceElementCount);
+    (*obj)->faces = malloc(sizeof(float) * 1000);
 
     int v = 0, n = 0, t = 0, f = 0;
     FILE* file = fopen(path, "r");
