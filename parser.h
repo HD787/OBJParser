@@ -6,11 +6,12 @@
 void parse(char* path, object** obj){
     size(path, obj);
     setFlags(path, obj);
+    printf("%i", (*obj)->faceCount);
     (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount);
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount);
-    (*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount);
-    //(*obj)->faces = malloc(sizeof(float) * 100);
+    //(*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount);
+    (*obj)->faces = malloc(sizeof(float) * 100);
 
     int v = 0, n = 0, t = 0, f = 0;
     FILE* file = fopen(path, "r");
@@ -48,7 +49,7 @@ void parse(char* path, object** obj){
         if(strcmp(temp, "o")){}
         //group name
         if(strcmp(temp, "g")){}
-        //defnes material to be used until another is specified
+        //defines material to be used until another is specified
         if(strcmp(temp, "usemtl")){}
         //smooth shading??
         if(strcmp(temp, "s")){}

@@ -75,7 +75,9 @@ void makeVertex(char* str, int* v, object** obj){
     char * endptr;
     str += 2; 
     while(*str != '\0'){
-        (*obj)->vertices[*v] = strtof(str, &endptr);
+        float val;
+        (*obj)->vertices[*v] = val = strtof(str, &endptr);
+        //printf(" %f ", val);
         (*v)++;
         if(*endptr != '\0')
             str = endptr + 1;
@@ -138,7 +140,7 @@ void makeTri(char* str, int* f, object** obj){
         }
         for(int i = 0; i < 3; i++){
             (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
-            printf("%c", arr[i]);
+            //printf("%c", arr[i]);
         }
     }
     //textures only
@@ -163,7 +165,7 @@ void makeTri(char* str, int* f, object** obj){
         }
         for(int i = 0; i < 6; i++){
             (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
-            printf("%c", arr[i]);
+            //printf("%c", arr[i]);
         }
     }
     //normals only
@@ -175,7 +177,7 @@ void makeTri(char* str, int* f, object** obj){
         while(*str != '\0'){
             unsigned int val;
             val = strtoul(str, &endptr, 10);
-            printf("%i", val);
+            //printf("%i", val);
             if(val == 0){ 
                 ;
             }
@@ -193,10 +195,8 @@ void makeTri(char* str, int* f, object** obj){
         }
         for(int i = 0; i < 6; i+=2){
             (*obj)->faces[(*f)++] = (*obj)->vertices[arr[i] - 1];
-            printf(" %f\n ", (*obj)->vertices[arr[i] - 1]);
-        }
-        for(int i = 1; i < 6; i += 2){
-           (*obj)->faces[(*f)++] = (*obj)->normals[arr[i] - 1]; 
+            (*obj)->faces[(*f)++] = (*obj)->normals[arr[i + 1] - 1];
+            //printf(" %i\n ", i);
         }
     } 
     //normals and textures

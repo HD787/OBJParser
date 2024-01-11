@@ -11,15 +11,15 @@ int main(){
     object* obj = malloc(sizeof(object));
     parse("cube.obj", &obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
-    // printf("%i\n", obj->vertexCount);
+    //printf("%i\n", obj->vertexCount);
     // printf("%i\n", obj->normalCount);
     // printf("%i\n", obj->textureCount);
     // printf("%i\n", obj->faceCount);
     //printf("%d, here", obj->flags);
     //printBinary(obj->flags);
-    // for(int i = 0; i < 1; i++){
-    //     printf("%f\n", obj->faces[i]);
+    // for(int i = 0; i < obj->vertexCount; i++){
+    //     printf("%f\n", obj->vertices[i]);
     // }
-    printf("%f\n", obj->faces[0]);
+    //printf("%f\n", obj->faces[0]);
     delete(&obj);
 } 
