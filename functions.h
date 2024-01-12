@@ -740,19 +740,19 @@ void makeTri(char* str, int* f, object** obj){
     }
 }
 void makeFace(char* str, int* f, object** obj){
-    int faceCount = 0;
+    int faceCountInLine = 0;
     for(int i = 2; i < 100; i++){
         if(str[i] == '\n'){
             faceCount++;
             break;
         } 
         if(str[i] == ' '){
-            faceCount++;
+            faceCountInLine++;
             if(str[i+1] == ' ' || str[i+1] == '\n') break;
         }
     }
-    if(faceCount == 3) makeTri(str, f, obj);
-    if(faceCount == 4) makeQuad(str, f, obj);
+    if(faceCountInLine == 3) makeTri(str, f, obj);
+    if(faceCountInLine == 4) makeQuad(str, f, obj);
 }
 
 void setFlags(char* path, object** obj){
