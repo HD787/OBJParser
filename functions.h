@@ -7,7 +7,6 @@
 #define NORMALS (1 << 1)
 #define TRIPLETEXTURE (1 << 2)
 
-
 void size(char* path, object** obj){
     (*obj)->vertexCount = 0;
     (*obj)->vertexElementCount = 3;
@@ -23,10 +22,10 @@ void size(char* path, object** obj){
     (*obj)->normalElementCount = 3;
 
     (*obj)->faceCount = 0;
-    (*obj)->faceElementCount = 3;
-    if((*obj)->flags & NORMALS) (*obj)->faceElementCount += 3;
-    if((*obj)->flags & TRIPLETEXTURE) (*obj)->faceElementCount += 3;
-    if(!((*obj)->flags & TRIPLETEXTURE) && (*obj)->flags & TEXTURES) (*obj)->faceElementCount += 2;
+    (*obj)->faceElementCount = 9;
+    if((*obj)->flags & NORMALS) (*obj)->faceElementCount += 9;
+    if((*obj)->flags & TRIPLETEXTURE) (*obj)->faceElementCount += 9;
+    if(!((*obj)->flags & TRIPLETEXTURE) && (*obj)->flags & TEXTURES) (*obj)->faceElementCount += 6;
 
     FILE* file = fopen(path, "r");
     if(file == NULL){
@@ -576,6 +575,7 @@ void makeTri(char* str, int* f, object** obj){
 
     //normals only
     if((*obj)->flags == 2){
+        //printf("%i\n", test++);
         const unsigned int valueCount = 6;
         int arr[valueCount];
         int index = 0;
@@ -584,7 +584,7 @@ void makeTri(char* str, int* f, object** obj){
         while(*str != '\0'){
             unsigned int val;
             val = strtoul(str, &endptr, 10);
-            //printf("%i", val);
+            //printf(" %i ", val);
             if(val == 0){ 
                 ;
             }
@@ -597,19 +597,27 @@ void makeTri(char* str, int* f, object** obj){
                 if(*str == '/'){
                     str++;
                 }
-                //printf("%c\n", *endptr);
             } else break;
         }
         for(int i = 0; i < valueCount; i+=2){
             unsigned long vertexIndex = (arr[i] - 1) * 3;
             unsigned long normalIndex = (arr[i + 1] - 1) * 3;
+            //printf("%lu v\n", vertexIndex);
+            //printf("%lu n\n", normalIndex);
             (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
+            //printf("%f\n", (*obj)->vertices[vertexIndex]);
             (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
+            //printf("%f\n", (*obj)->vertices[vertexIndex + 1]);
             (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            //printf("%f\n", (*obj)->vertices[vertexIndex + 2]);
 
             (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
+            //printf("%f\n", (*obj)->vertices[normalIndex]);
             (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
+            //printf("%f\n", (*obj)->vertices[normalIndex + 1]);
             (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            //printf("%f\n", (*obj)->vertices[vertexIndex + 2]);
+            //printf("%i\n", j++);
         }
         return;
     } 
@@ -731,7 +739,6 @@ void makeTri(char* str, int* f, object** obj){
         return;
     }
 }
-
 void makeFace(char* str, int* f, object** obj){
     int faceCount = 0;
     for(int i = 2; i < 100; i++){

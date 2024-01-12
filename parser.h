@@ -11,8 +11,8 @@ void parse(char* path, object** obj){
     (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount * (*obj)->vertexElementCount);
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount * (*obj)->textureElementCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount * (*obj)->normalElementCount);
-    //(*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount * (*obj)->faceElementCount);
-    (*obj)->faces = malloc(sizeof(float) * 1000);
+    (*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount * (*obj)->faceElementCount);
+    //(*obj)->faces = malloc(sizeof(float) * 1000);
 
     int v = 0, n = 0, t = 0, f = 0;
     FILE* file = fopen(path, "r");
@@ -48,12 +48,16 @@ void parse(char* path, object** obj){
         }
         //object name
         if(strcmp(temp, "o")){}
+
         //group name
         if(strcmp(temp, "g")){}
+
         //defines material to be used until another is specified
         if(strcmp(temp, "usemtl")){}
+
         //smooth shading??
         if(strcmp(temp, "s")){}
+        
         if(strcmp(temp, "mtllib")){}
 
         memset(buf, 0, sizeof(buf));
