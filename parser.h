@@ -2,12 +2,11 @@
 #include "functions.h"
 //#include "types.h"
 #include "string.h"
-
 void parse(char* path, object** obj){
     setFlags(path, obj);
     size(path, obj);
-    printf("%i\n", (*obj)->faceCount);
-    printf("%i", (*obj)->faceElementCount);
+    //printf("%i\n", (*obj)->faceCount);
+    //printf("%i", (*obj)->faceElementCount);
     (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount * (*obj)->vertexElementCount);
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount * (*obj)->textureElementCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount * (*obj)->normalElementCount);
@@ -22,7 +21,7 @@ void parse(char* path, object** obj){
         return;
     }
     char buf[100];
-    while (fgets(buf, sizeof(buf), file)) {
+    while(fgets(buf, sizeof(buf), file)) {
         char temp[10];
         for(int i = 0; i < 10; ++i){
             if(buf[i] == ' ' || buf[i] == '#'){
@@ -44,6 +43,7 @@ void parse(char* path, object** obj){
         }
         //face
         if(strcmp(temp, "f") == 0){
+            //printf(" %i ", test++);
             makeFace(buf, &f, obj);
         }
         //object name
@@ -57,9 +57,9 @@ void parse(char* path, object** obj){
 
         //smooth shading??
         if(strcmp(temp, "s")){}
-        
-        if(strcmp(temp, "mtllib")){}
 
+        if(strcmp(temp, "mtllib")){}
+        //printf("%s\n", buf);
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
