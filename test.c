@@ -9,7 +9,7 @@ void printBinary(unsigned int num) {
 
 int main(){
     object* obj = malloc(sizeof(object));
-    parse("cube.obj", &obj);
+    parse("largeExample.obj", &obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 
     printf("\n%i\n", obj->faceCount * obj->faceElementCount);
@@ -20,7 +20,11 @@ int main(){
     //printBinary(obj->flags);
 
     int test = 0;
-    for(int i = 0; i < (obj->faceCount * obj->faceElementCount); i++){
+    for(int i = 0; i < obj->faceCount ; i++){
+        printf("\n %i", test++);
+        for(int j = 0; j < obj->faceElementCount; j++){
+            printf("%f :%i\n", obj->faces[i + j]);
+        }
         printf("%f :%i\n", obj->faces[i], test++);
     }
 

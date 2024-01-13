@@ -6,7 +6,7 @@
 #define TEXTURES (1 << 0)
 #define NORMALS (1 << 1)
 #define TRIPLETEXTURE (1 << 2)
-int test = 1;
+
 void size(char* path, object** obj){
     (*obj)->vertexCount = 0;
     (*obj)->vertexElementCount = 3;
@@ -603,20 +603,20 @@ void makeTri(char* str, int* f, object** obj){
             unsigned long normalIndex = (arr[i + 1] - 1) * 3;
             //printf("%lu v\n", vertexIndex);
             //printf("%lu n\n", normalIndex);
-            printf(" %i ", test++);
+            //printf(" %i ", test++);
             (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            printf("v1: %f ", (*obj)->vertices[vertexIndex]);
+            // printf("v1: %f ", (*obj)->vertices[vertexIndex]);
             (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            printf("v2: %f ", (*obj)->vertices[vertexIndex + 1]);
+            // printf("v2: %f ", (*obj)->vertices[vertexIndex + 1]);
             (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
-            printf("v3: %f ", (*obj)->vertices[vertexIndex + 2]);
+            // printf("v3: %f ", (*obj)->vertices[vertexIndex + 2]);
 
             (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            printf("n1: %f ", (*obj)->normals[normalIndex]);
+            // printf("n1: %f ", (*obj)->normals[normalIndex]);
             (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            printf("n2: %f ", (*obj)->normals[normalIndex + 1]);
+            // printf("n2: %f ", (*obj)->normals[normalIndex + 1]);
             (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
-            printf("n3: %f\n", (*obj)->normals[normalIndex + 2]);
+            // printf("n3: %f\n", (*obj)->normals[normalIndex + 2]);
         }
         return;
     } 
@@ -640,7 +640,6 @@ void makeTri(char* str, int* f, object** obj){
             }
             if(*endptr != '\0'){
                 str = endptr + 1;
-                printf("%c\n", *endptr);
             } else break;
         }
         for(int i = 0; i < valueCount; i += 3){
