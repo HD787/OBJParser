@@ -5,8 +5,8 @@
 void parse(char* path, object** obj){
     setFlags(path, obj);
     size(path, obj);
-    //printf("%i\n", (*obj)->faceCount);
-    //printf("%i", (*obj)->faceElementCount);
+    // printf("%i\n", (*obj)->faceCount);
+    // printf("%i", (*obj)->faceElementCount);
     (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount * (*obj)->vertexElementCount);
     (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount * (*obj)->textureElementCount);
     (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount * (*obj)->normalElementCount);

@@ -16,10 +16,12 @@ void size(char* path, object** obj){
     if((*obj)->flags & TRIPLETEXTURE){
         (*obj)->textureElementCount = 3;
     }
-    else (*obj)->textureCount = 2; 
+    else if((*obj)->flags & TEXTURES) (*obj)->textureElementCount = 2; 
 
     (*obj)->normalCount = 0;
-    (*obj)->normalElementCount = 3;
+    if((*obj)->flags & TEXTURES)
+        (*obj)->normalElementCount = 3;
+    else(*obj)->normalElementCount = 0; 
 
     (*obj)->faceCount = 0;
     (*obj)->faceElementCount = 9;
