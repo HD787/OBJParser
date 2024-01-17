@@ -10,7 +10,7 @@ void printBinary(unsigned int num) {
 int main(){
     object* obj = malloc(sizeof(object));
     //parse("largeExample.obj", &obj);
-    parse("../copengl/pirate_gold_copy.obj", &obj);
+    parse("../copengl/pirate_gold_copy.obj", obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 
     printf("\n%i\n", obj->faceElementCount);
@@ -30,5 +30,5 @@ int main(){
     // }
     
     printf("\n%f", obj->faces[300]);
-    delete(&obj);
+    delete(obj);
 } 

@@ -7,27 +7,27 @@
 #define NORMALS (1 << 1)
 #define TRIPLETEXTURE (1 << 2)
 
-void size(char* path, object** obj){
-    (*obj)->vertexCount = 0;
-    (*obj)->vertexElementCount = 3;
+void size(char* path, object* obj){
+    obj->vertexCount = 0;
+    obj->vertexElementCount = 3;
 
-    (*obj)->textureCount = 0;
-    (*obj)->textureElementCount = 0;
-    if((*obj)->flags & TRIPLETEXTURE){
-        (*obj)->textureElementCount = 3;
+    obj->textureCount = 0;
+    obj->textureElementCount = 0;
+    if(obj->flags & TRIPLETEXTURE){
+        obj->textureElementCount = 3;
     }
-    else if((*obj)->flags & TEXTURES) (*obj)->textureElementCount = 2; 
+    else if(obj->flags & TEXTURES) obj->textureElementCount = 2; 
 
-    (*obj)->normalCount = 0;
-    if((*obj)->flags & TEXTURES)
-        (*obj)->normalElementCount = 3;
-    else(*obj)->normalElementCount = 0; 
+    obj->normalCount = 0;
+    if(obj->flags & TEXTURES)
+        obj->normalElementCount = 3;
+    else obj->normalElementCount = 0; 
 
-    (*obj)->faceCount = 0;
-    (*obj)->faceElementCount = 9;
-    if((*obj)->flags & NORMALS) (*obj)->faceElementCount += 9;
-    if((*obj)->flags & TRIPLETEXTURE) (*obj)->faceElementCount += 9;
-    if(!((*obj)->flags & TRIPLETEXTURE) && (*obj)->flags & TEXTURES) (*obj)->faceElementCount += 6;
+    obj->faceCount = 0;
+    obj->faceElementCount = 9;
+    if(obj->flags & NORMALS) obj->faceElementCount += 9;
+    if(obj->flags & TRIPLETEXTURE) obj->faceElementCount += 9;
+    if(!(obj->flags & TRIPLETEXTURE) && obj->flags & TEXTURES) obj->faceElementCount += 6;
 
     FILE* file = fopen(path, "r");
     if(file == NULL){
@@ -43,16 +43,16 @@ void size(char* path, object** obj){
             temp[i] = buf[i];
         }
         if(strcmp(temp, "v") == 0)
-            (*obj)->vertexCount += 3;
+            obj->vertexCount += 3;
 
         if(strcmp(temp, "vt") == 0){
-            (*obj)->textureCount++;
-            if((*obj)->flags & TRIPLETEXTURE){
-                (*obj)->textureElementCount += 3;
-            }else (*obj)->textureCount += 2; 
+            obj->textureCount++;
+            if(obj->flags & TRIPLETEXTURE){
+                obj->textureElementCount += 3;
+            }else obj->textureCount += 2; 
         }
         if(strcmp(temp, "vn") == 0)
-            (*obj)->normalCount += 3;
+            obj->normalCount += 3;
 
         if(strcmp(temp, "f") == 0){
             int count = 0;
@@ -66,8 +66,8 @@ void size(char* path, object** obj){
                 if(buf[i] == '\n') 
                     break;
             }
-            if(count == 2) (*obj)->faceCount++;
-            if(count == 3) (*obj)->faceCount += 2;
+            if(count == 2) obj->faceCount++;
+            if(count == 3) obj->faceCount += 2;
         }
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));
@@ -75,20 +75,20 @@ void size(char* path, object** obj){
    
 }
 
-void delete(object** obj){
-    free((*obj)->vertices);
-    free((*obj)->textures);
-    free((*obj)->normals);
-    free((*obj)->faces);
-    free((*obj));
+void delete(object* obj){
+    free(obj->vertices);
+    free(obj->textures);
+    free(obj->normals);
+    free(obj->faces);
+    free(obj);
 }
 
-void makeVertex(char* str, int* v, object** obj){
+void makeVertex(char* str, int* v, object* obj){
     char * endptr;
     str += 2; 
     while(*str != '\0'){
         float val;
-        (*obj)->vertices[*v] = val = strtof(str, &endptr);
+        obj->vertices[*v] = val = strtof(str, &endptr);
         //printf(" %f ", val);
         (*v)++;
         if(*endptr != '\0')
@@ -97,11 +97,11 @@ void makeVertex(char* str, int* v, object** obj){
     }
 }
 
-void makeTexture(char* str, int* t, object** obj){
+void makeTexture(char* str, int* t, object* obj){
     char * endptr;
     str += 3; 
     while(*str != '\0'){
-        (*obj)->textures[*t] = strtof(str, &endptr);
+        obj->textures[*t] = strtof(str, &endptr);
         (*t)++;
         if(*endptr != '\0')
             str = endptr + 1;
@@ -109,11 +109,11 @@ void makeTexture(char* str, int* t, object** obj){
     }
 }
 
-void makeNormal(char* str, int* n, object** obj){
+void makeNormal(char* str, int* n, object* obj){
     char * endptr;
     str += 3; 
     while(*str != '\0'){
-        (*obj)->normals[*n] = strtof(str, &endptr);
+        obj->normals[*n] = strtof(str, &endptr);
         (*n)++;
         if(*endptr != '\0') 
             str = endptr + 1;
@@ -121,8 +121,8 @@ void makeNormal(char* str, int* n, object** obj){
     }
 }
 
-void makeQuad(char* str, int* f, object** obj){
-    if((*obj)->flags == 0){
+void makeQuad(char* str, int* f, object* obj){
+    if(obj->flags == 0){
         //1 element per face
         int arr[4];
         int index = 0;
@@ -156,20 +156,20 @@ void makeQuad(char* str, int* f, object** obj){
 
         for(int i = 0; i < 3; i += 1){
             unsigned long vertexIndex = (arr1[i] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];  
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];  
         }
         for(int i = 0; i < 3; i += 1){
             unsigned long vertexIndex = (arr2[i] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];  
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];  
         }
         return;
     }
     //textures only, two values
-    if((*obj)->flags == 1){
+    if(obj->flags == 1){
         //2 elements per face
         int arr[8];
         int index = 0;
@@ -209,28 +209,28 @@ void makeQuad(char* str, int* f, object** obj){
         for(int i = 0; i < 6; i += 2){
             unsigned long vertexIndex = (arr1[i] - 1) * 3;
             unsigned long textureIndex = (arr1[i + 1] - 1) * 2;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
         }
         for(int i = 0; i < 6; i += 2){
             unsigned long vertexIndex = (arr2[i] - 1) * 3;
             unsigned long textureIndex = (arr2[i + 1] - 1) * 2;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
         }
         return;
     }
 
     // only normals
-    if((*obj)->flags == 2){
+    if(obj->flags == 2){
         int arr[8];
         int index = 0;
         str += 2;
@@ -273,30 +273,30 @@ void makeQuad(char* str, int* f, object** obj){
         for(int i = 0; i < 6; i+=2){
             unsigned long vertexIndex = (arr1[i] - 1) * 3;
             unsigned long normalIndex = (arr1[i + 1] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         for(int i = 0; i < 6; i+=2){
             unsigned long vertexIndex = (arr2[i] - 1) * 3;
             unsigned long normalIndex = (arr2[i + 1] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         return;
     }
 
     //all three, 2 values for texture
-    if((*obj)->flags == 3){
+    if(obj->flags == 3){
         int arr[12];
         int index = 0;
         str += 2;
@@ -341,36 +341,36 @@ void makeQuad(char* str, int* f, object** obj){
             unsigned long vertexIndex = (arr1[i] - 1) * 3;
             unsigned long textureIndex = (arr1[i + 1] - 1) * 2;
             unsigned long normalIndex = (arr1[i + 2] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         for(int i = 0; i < 9; i += 3){
             unsigned long vertexIndex = (arr2[i] - 1) * 3;
             unsigned long textureIndex = (arr2[i + 1] - 1) * 2;
             unsigned long normalIndex = (arr2[i + 2] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         return;
     }
     //only textures, 3 values
-    if((*obj)->flags == 4 || (*obj)->flags == 5){
+    if(obj->flags == 4 || obj->flags == 5){
         int arr[8];
         int index = 0;
         str += 2;
@@ -408,31 +408,31 @@ void makeQuad(char* str, int* f, object** obj){
         for(int i = 0; i < 6; i += 2){
             unsigned long vertexIndex = (arr1[i] - 1) * 3;
             unsigned long textureIndex = (arr1[i + 1] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 2];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 2];
         }
         for(int i = 0; i < 6; i += 2){
             unsigned long vertexIndex = (arr2[i] - 1) * 3;
             unsigned long textureIndex = (arr2[i + 1] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 2];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 2];
         }
         return;
     }
 
     //6 should be impossible
     //all three, three value textures
-    if((*obj)->flags == 7){
+    if(obj->flags == 7){
         int arr[12];
         int index = 0;
         str += 2;
@@ -477,41 +477,41 @@ void makeQuad(char* str, int* f, object** obj){
             unsigned long vertexIndex = (arr1[i] - 1) * 3;
             unsigned long textureIndex = (arr1[i + 1] - 1) * 3;
             unsigned long normalIndex = (arr1[i + 2] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 2];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         for(int i = 0; i < 9; i += 3){
             unsigned long vertexIndex = (arr2[i] - 1) * 3;
             unsigned long textureIndex = (arr2[i + 1] - 1) * 3;
             unsigned long normalIndex = (arr2[i + 2] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 2];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         return;
     }
 }
 
-void makeTri(char* str, int* f, object** obj){
+void makeTri(char* str, int* f, object* obj){
     //no normals, no textures
-    if((*obj)->flags == 0){
+    if(obj->flags == 0){
         int arr[3];
         int index = 0;
         str += 2;
@@ -532,16 +532,16 @@ void makeTri(char* str, int* f, object** obj){
         }
         for(int i = 0; i < 3; i += 2){
             unsigned long vertexIndex = (arr[i] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2]; 
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2]; 
             //printf("%c", arr[i]);   
         }
         return;
     }
 
     //textures only, two values
-    if((*obj)->flags == 1){
+    if(obj->flags == 1){
         const unsigned int valueCount = 6;
         int arr[valueCount];
         int index = 0;
@@ -564,18 +564,18 @@ void makeTri(char* str, int* f, object** obj){
         for(int i = 0; i < valueCount; i += 2){
             unsigned long vertexIndex = (arr[i] - 1) * 3;
             unsigned long textureIndex = (arr[i + 1] - 1) * 2;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
         }
         return;
     }
 
     //normals only
-    if((*obj)->flags == 2){
+    if(obj->flags == 2){
         //printf("%i\n", test++);
         const unsigned int valueCount = 6;
         int arr[valueCount];
@@ -606,25 +606,25 @@ void makeTri(char* str, int* f, object** obj){
             //printf("%lu v\n", vertexIndex);
             //printf("%lu n\n", normalIndex);
             //printf(" %i ", test++);
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            // printf("v1: %f ", (*obj)->vertices[vertexIndex]);
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            // printf("v2: %f ", (*obj)->vertices[vertexIndex + 1]);
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
-            // printf("v3: %f ", (*obj)->vertices[vertexIndex + 2]);
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            // printf("v1: %f ", obj->vertices[vertexIndex]);
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            // printf("v2: %f ", obj->vertices[vertexIndex + 1]);
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
+            // printf("v3: %f ", obj->vertices[vertexIndex + 2]);
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            // printf("n1: %f ", (*obj)->normals[normalIndex]);
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            // printf("n2: %f ", (*obj)->normals[normalIndex + 1]);
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
-            // printf("n3: %f\n", (*obj)->normals[normalIndex + 2]);
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            // printf("n1: %f ", obj->normals[normalIndex]);
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            // printf("n2: %f ", obj->normals[normalIndex + 1]);
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
+            // printf("n3: %f\n", obj->normals[normalIndex + 2]);
         }
         return;
     } 
 
     //normals and textures, two texture values
-    if((*obj)->flags == 3){
+    if(obj->flags == 3){
         const unsigned int valueCount = 9;
         int arr[valueCount];
         int index = 0;
@@ -648,23 +648,23 @@ void makeTri(char* str, int* f, object** obj){
             unsigned long vertexIndex = (arr[i] - 1) * 3;
             unsigned long textureIndex = (arr[i + 1] - 1) * 2;
             unsigned long normalIndex = (arr[i + 2] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         return;
     }
     //4 should be impossible as if the third bit is a 1, so will the first bit
     //so im folding them in together, think this will be fine
     //vertices and textures with three values
-    if((*obj)->flags == 4 || (*obj)->flags == 5){
+    if(obj->flags == 4 || obj->flags == 5){
         const unsigned int valueCount = 6;
         int arr[valueCount];
         int index = 0;
@@ -687,20 +687,20 @@ void makeTri(char* str, int* f, object** obj){
         for(int i = 0; i < valueCount; i += 2){
             unsigned long vertexIndex = (arr[i] - 1) * 3;
             unsigned long textureIndex = (arr[i + 1] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 2];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 2];
         }
         return;
     }
     //6 also should be impossible as the binary representation of 6 is 110, again meaning triple values is present but textures is not
 
     //normals and textures are present with triple values
-    if((*obj)->flags == 7){
+    if(obj->flags == 7){
         const unsigned int valueCount = 9;
         int arr[valueCount];
         int index = 0;
@@ -724,22 +724,22 @@ void makeTri(char* str, int* f, object** obj){
             unsigned long vertexIndex = (arr[i] - 1) * 3;
             unsigned long textureIndex = (arr[i + 1] - 1) * 3;
             unsigned long normalIndex = (arr[i + 2] - 1) * 3;
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->vertices[vertexIndex + 2];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 1];
+            obj->faces[(*f)++] = obj->vertices[vertexIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->textures[textureIndex + 2];
+            obj->faces[(*f)++] = obj->textures[textureIndex];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 1];
+            obj->faces[(*f)++] = obj->textures[textureIndex + 2];
 
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 1];
-            (*obj)->faces[(*f)++] = (*obj)->normals[normalIndex + 2];
+            obj->faces[(*f)++] = obj->normals[normalIndex];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 1];
+            obj->faces[(*f)++] = obj->normals[normalIndex + 2];
         }
         return;
     }
 }
-void makeFace(char* str, int* f, object** obj){
+void makeFace(char* str, int* f, object* obj){
     int faceCountInLine = 0;
     for(int i = 2; i < 100; i++){
         if(str[i] == '\n' || str[i] == '\0'){
@@ -755,8 +755,8 @@ void makeFace(char* str, int* f, object** obj){
     if(faceCountInLine == 4) makeQuad(str, f, obj);
 }
 
-void setFlags(char* path, object** obj){
-    (*obj)->flags = 0;
+void setFlags(char* path, object* obj){
+    obj->flags = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -781,7 +781,7 @@ void setFlags(char* path, object** obj){
             if(textureBuffer[i] == ' ')textureCount++;
         }
     }
-    if(textureCount == 2) (*obj)->flags |= TRIPLETEXTURE;
+    if(textureCount == 2) obj->flags |= TRIPLETEXTURE;
 
     //this will check to see what values are present.
     int seenFirstSlash = 0; 
@@ -789,17 +789,17 @@ void setFlags(char* path, object** obj){
         if(buf[i] == ' ') break;
         if(buf[i] == '/' && seenFirstSlash == 0){
             if(buf[i+1] == '/'){
-                (*obj)->flags |= NORMALS;
+                obj->flags |= NORMALS;
                  break;
             }
             else {
                 seenFirstSlash = 1;
-                (*obj)->flags |= TEXTURES;
+                obj->flags |= TEXTURES;
                 continue;
             }
         }
         if(buf[i] == '/' && seenFirstSlash == 1){
-            (*obj)->flags |= (NORMALS);
+            obj->flags |= (NORMALS);
         }
 
     }

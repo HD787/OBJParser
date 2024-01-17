@@ -2,16 +2,16 @@
 #include "functions.h"
 //#include "types.h"
 #include "string.h"
-void parse(char* path, object** obj){
+void parse(char* path, object* obj){
     setFlags(path, obj);
     size(path, obj);
-    // printf("%i\n", (*obj)->faceCount);
-    // printf("%i", (*obj)->faceElementCount);
-    (*obj)->vertices = malloc(sizeof(float) * (*obj)->vertexCount * (*obj)->vertexElementCount);
-    (*obj)->textures = malloc(sizeof(float) * (*obj)->textureCount * (*obj)->textureElementCount);
-    (*obj)->normals = malloc(sizeof(float) * (*obj)->normalCount * (*obj)->normalElementCount);
-    (*obj)->faces = malloc(sizeof(float) * (*obj)->faceCount * (*obj)->faceElementCount);
-    //(*obj)->faces = malloc(sizeof(float) * 1000);
+    // printf("%i\n", obj->faceCount);
+    // printf("%i", obj->faceElementCount);
+    obj->vertices = malloc(sizeof(float) * obj->vertexCount * obj->vertexElementCount);
+    obj->textures = malloc(sizeof(float) * obj->textureCount * obj->textureElementCount);
+    obj->normals = malloc(sizeof(float) * obj->normalCount * obj->normalElementCount);
+    obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
+    //obj->faces = malloc(sizeof(float) * 1000);
 
     int v = 0, n = 0, t = 0, f = 0;
     FILE* file = fopen(path, "r");
