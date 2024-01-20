@@ -23,6 +23,7 @@ void size(char* path, object* obj){
         obj->normalElementCount = 3;
     else obj->normalElementCount = 0; 
 
+    obj->faceObjectCount = 0;
     obj->faceCount = 0;
     obj->faceElementCount = 9;
     if(obj->flags & NORMALS) obj->faceElementCount += 9;
@@ -68,6 +69,9 @@ void size(char* path, object* obj){
             }
             if(count == 2) obj->faceCount++;
             if(count == 3) obj->faceCount += 2;
+        }
+        if(strcmp(temp, "usemtl") == 0){
+            obj->faceObjectIndices[obj->faceObjectCount] = obj->faceCount;
         }
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));

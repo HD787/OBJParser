@@ -12,6 +12,12 @@ typedef struct{
     int textureElementCount;
 
     float* faces;
+
+    int* faceObjectIndices;
+    //posible idea
+    int* indexedMaterialList;
+    //
+    int* faceObjectCount;
     int faceCount;
     int faceElementCount;
 
