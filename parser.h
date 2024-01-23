@@ -11,6 +11,7 @@ void parse(char* path, object* obj){
     obj->textures = malloc(sizeof(float) * obj->textureCount * obj->textureElementCount);
     obj->normals = malloc(sizeof(float) * obj->normalCount * obj->normalElementCount);
     obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
+    obj->faceObjectIndices = malloc(sizeof(materialIndices) * obj->faceObjectCount);
     //obj->faces = malloc(sizeof(float) * 1000);
 
     int vectorCurrentIndex = 0, normalCurrentIndex = 0, textureCurrentIndex = 0, faceCurrentIndex = 0;

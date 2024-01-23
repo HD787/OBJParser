@@ -18,18 +18,15 @@ typedef struct{
     int textureElementCount;
 
     float* faces;
-    //posible idea, the other is to use a list of structs containing the index and the name of the material
-    int* faceObjectIndices;
-    
-    //char** indexedMaterialList;
-    
-
-
-    //other idea array of structs
-    //materialIndices* faceObjectIndices;
-    int faceObjectCount;
     int faceCount;
     int faceElementCount;
+    
+
+
+    materialIndices* faceObjectIndices;
+    //the number of face objects denoted by a usemtl tag
+    int faceObjectCount;
+    
 
 
     unsigned int flags;
