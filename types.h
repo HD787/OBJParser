@@ -1,4 +1,10 @@
 typedef struct{
+    int index;
+    char* materialName;
+}materialIndices;
+
+
+typedef struct{
     float* vertices;
     int vertexCount;
     int vertexElementCount;
@@ -12,12 +18,16 @@ typedef struct{
     int textureElementCount;
 
     float* faces;
-
+    //posible idea, the other is to use a list of structs containing the index and the name of the material
     int* faceObjectIndices;
-    //posible idea
-    int* indexedMaterialList;
-    //
-    int* faceObjectCount;
+    
+    //char** indexedMaterialList;
+    
+
+
+    //other idea array of structs
+    //materialIndices* faceObjectIndices;
+    int faceObjectCount;
     int faceCount;
     int faceElementCount;
 
@@ -25,3 +35,4 @@ typedef struct{
     unsigned int flags;
     
 }object;
+

@@ -71,7 +71,9 @@ void size(char* path, object* obj){
             if(count == 3) obj->faceCount += 2;
         }
         if(strcmp(temp, "usemtl") == 0){
-            obj->faceObjectIndices[obj->faceObjectCount] = obj->faceCount;
+            //this code will segfault until you malloc faceObjectIndices which you probably dont want to do here
+            //obj->faceObjectIndices[obj->faceObjectCount] = obj->faceCount;
+            //obj->faceObjectCount++;
         }
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));

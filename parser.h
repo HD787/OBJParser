@@ -13,7 +13,7 @@ void parse(char* path, object* obj){
     obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
     //obj->faces = malloc(sizeof(float) * 1000);
 
-    int v = 0, n = 0, t = 0, f = 0;
+    int vectorCurrentIndex = 0, normalCurrentIndex = 0, textureCurrentIndex = 0, faceCurrentIndex = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -31,20 +31,20 @@ void parse(char* path, object* obj){
         }
         //vertex
         if(strcmp(temp, "v") == 0){
-            makeVertex(buf, &v, obj);
+            makeVertex(buf, &vectorCurrentIndex, obj);
         }
         //texture coordinates
         if(strcmp(temp, "vt") == 0){
-            makeTexture(buf, &t, obj);
+            makeTexture(buf, &textureCurrentIndex, obj);
         }
         //normals vn
         if(strcmp(temp, "vn") == 0){
-            makeNormal(buf, &n, obj);
+            makeNormal(buf, &normalCurrentIndex, obj);
         }
         //face
         if(strcmp(temp, "f") == 0){
             //printf(" %i ", test++);
-            makeFace(buf, &f, obj);
+            makeFace(buf, &faceCurrentIndex, obj);
         }
         //object name
         if(strcmp(temp, "o")){}
