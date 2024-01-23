@@ -11,10 +11,10 @@ void parse(char* path, object* obj){
     obj->textures = malloc(sizeof(float) * obj->textureCount * obj->textureElementCount);
     obj->normals = malloc(sizeof(float) * obj->normalCount * obj->normalElementCount);
     obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
-    obj->faceObjectIndices = malloc(sizeof(materialIndices) * obj->faceObjectCount);
+    obj->faceObjectIndices = malloc(sizeof(materialIndex) * obj->faceObjectCount);
     //obj->faces = malloc(sizeof(float) * 1000);
 
-    int vectorCurrentIndex = 0, normalCurrentIndex = 0, textureCurrentIndex = 0, faceCurrentIndex = 0;
+    int vectorCurrentIndex = 0, normalCurrentIndex = 0, textureCurrentIndex = 0, faceCurrentIndex = 0, materialIndexCurrentIndex = 0;
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -54,7 +54,10 @@ void parse(char* path, object* obj){
         if(strcmp(temp, "g")){}
 
         //defines material to be used until another is specified
-        if(strcmp(temp, "usemtl")){}
+        if(strcmp(temp, "usemtl")){
+            //faceCurrentIndex can be passed in directly as it's not modified
+            makeMaterialIndex(temp, faceCurrentIndex, &materialIndexCurrentIndex, obj);
+        }
 
         //smooth shading??
         if(strcmp(temp, "s")){}

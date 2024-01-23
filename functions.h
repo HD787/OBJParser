@@ -514,6 +514,15 @@ void makeQuad(char* str, int* f, object* obj){
     }
 }
 
+//better names in this function signature, consider doing this elsewhere.
+void makeMaterialIndex(char* str, int faceCurrentIndex, int* materialIndexCurrentIndex, object* obj){
+    materialIndex* temp = malloc(sizeof(materialIndex));
+    temp->index = faceCurrentIndex;
+    char* slice = str + 6;
+    temp->materialName = slice;
+    obj->faceObjectIndices[(*materialIndexCurrentIndex)++] = *temp;
+}
+
 void makeTri(char* str, int* f, object* obj){
     //no normals, no textures
     if(obj->flags == 0){
