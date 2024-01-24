@@ -21,13 +21,9 @@ int main(){
     //printBinary(obj->flags);
 
     int test = 0;
-    // for(int i = 0; i < obj->faceCount ; i++){
-    //     printf("\n %i", test++);
-    //     for(int j = 0; j < obj->faceElementCount; j++){
-    //         printf("%f\n", obj->faces[i + j]);
-    //     }
-    //     printf("%f :%i\n", obj->faces[i], test++);
-    // }
+    for(int i = 0; i < obj->faceObjectIndexCount ; i++){
+        printf("%s", obj->faceObjectIndices.materialName[i])
+    }
     
     printf("\n%f", obj->faces[300]);
     delete(obj);
