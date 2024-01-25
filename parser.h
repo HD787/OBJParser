@@ -54,9 +54,10 @@ void parse(char* path, object* obj){
         if(strcmp(temp, "g")){}
 
         //defines material to be used until another is specified
-        if(strcmp(temp, "usemtl")){
+        if(strcmp(temp, "usemtl") == 0){
+            //printf("this should happen once");
             //faceCurrentIndex can be passed in directly as it's not modified
-            makeMaterialIndex(temp, faceCurrentIndex, &materialIndexCurrentIndex, obj);
+            makeMaterialIndex(buf, faceCurrentIndex, &materialIndexCurrentIndex, obj);
         }
 
         //smooth shading??

@@ -24,6 +24,7 @@ typedef struct{
 
 
     materialIndex* faceObjectIndices;
+    int faceObjectIndexCount;
     //the number of face objects denoted by a usemtl tag
     int faceObjectCount;
     

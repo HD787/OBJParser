@@ -1,6 +1,6 @@
 #include "types.h"
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #define TEXTURES (1 << 0)
@@ -519,8 +519,10 @@ void makeMaterialIndex(char* str, int faceCurrentIndex, int* materialIndexCurren
     materialIndex* temp = malloc(sizeof(materialIndex));
     temp->index = faceCurrentIndex;
     char* slice = str + 6;
-    temp->materialName = slice;
+    temp->materialName = malloc(strlen(slice) + 1);
+    strcpy(temp->materialName, slice);
     obj->faceObjectIndices[(*materialIndexCurrentIndex)++] = *temp;
+    printf("%s\n", slice);
 }
 
 void makeTri(char* str, int* f, object* obj){

@@ -9,11 +9,11 @@ void printBinary(unsigned int num) {
 
 int main(){
     object* obj = malloc(sizeof(object));
-    //parse("largeExample.obj", &obj);
-    parse("../copengl/pirate_gold_copy.obj", obj);
+    parse("cube.obj", obj);
+    //parse("../copengl/pirate_gold_copy.obj", obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 
-    printf("\n%i\n", obj->faceElementCount);
+    //printf("\n%i\n", obj->faceElementCount);
     // printf("%i\n", obj->normalCount);
     // printf("%i\n", obj->textureCount);
     // printf("%i\n", obj->faceCount);
@@ -21,10 +21,10 @@ int main(){
     //printBinary(obj->flags);
 
     int test = 0;
-    for(int i = 0; i < obj->faceObjectIndexCount ; i++){
-        printf("%s", obj->faceObjectIndices.materialName[i])
-    }
+    // for(int i = 0; i < obj->faceObjectIndexCount ; i++){
+    //     printf("%s", (obj->faceObjectIndices[i]).materialName);
+    // }
     
-    printf("\n%f", obj->faces[300]);
+    //printf("\n%f", obj->faces[300]);
     delete(obj);
 } 
