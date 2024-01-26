@@ -8,9 +8,11 @@
 #define TRIPLETEXTURE (1 << 2)
 
 void size(char* path, object* obj){
+    //instantiate vertex vals
     obj->vertexCount = 0;
     obj->vertexElementCount = 3;
 
+    //instantiate texture vals
     obj->textureCount = 0;
     obj->textureElementCount = 0;
     if(obj->flags & TRIPLETEXTURE){
@@ -18,17 +20,22 @@ void size(char* path, object* obj){
     }
     else if(obj->flags & TEXTURES) obj->textureElementCount = 2; 
 
+    //instantiate normal vals
     obj->normalCount = 0;
     if(obj->flags & TEXTURES)
         obj->normalElementCount = 3;
     else obj->normalElementCount = 0; 
 
+    //instantiate face vals
     obj->faceObjectCount = 0;
     obj->faceCount = 0;
     obj->faceElementCount = 9;
     if(obj->flags & NORMALS) obj->faceElementCount += 9;
     if(obj->flags & TRIPLETEXTURE) obj->faceElementCount += 9;
     if(!(obj->flags & TRIPLETEXTURE) && obj->flags & TEXTURES) obj->faceElementCount += 6;
+
+    //instantiate face index for materials vals
+    obj->materialIndexCount = 0;
 
     FILE* file = fopen(path, "r");
     if(file == NULL){
@@ -522,7 +529,7 @@ void makeMaterialIndex(char* str, int faceCurrentIndex, int* materialIndexCurren
     temp->materialName = malloc(strlen(slice) + 1);
     strcpy(temp->materialName, slice);
     obj->faceObjectIndices[(*materialIndexCurrentIndex)++] = *temp;
-    printf("%s\n", slice);
+    printf("%i\n", obj->materialIndexCount++);
 }
 
 void makeTri(char* str, int* f, object* obj){

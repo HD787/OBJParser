@@ -55,7 +55,7 @@ void parse(char* path, object* obj){
 
         //defines material to be used until another is specified
         if(strcmp(temp, "usemtl") == 0){
-            //printf("this should happen once");
+            printf("this should happen once");
             //faceCurrentIndex can be passed in directly as it's not modified
             makeMaterialIndex(buf, faceCurrentIndex, &materialIndexCurrentIndex, obj);
         }
