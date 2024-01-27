@@ -23,7 +23,7 @@ typedef struct{
     
 
 
-    materialIndex* faceObjectIndices;
+    materialIndex* materialIndices;
     int materialIndexCount;
     //the number of face objects denoted by a usemtl tag
     int faceObjectCount;

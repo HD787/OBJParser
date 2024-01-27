@@ -27,7 +27,6 @@ void size(char* path, object* obj){
     else obj->normalElementCount = 0; 
 
     //instantiate face vals
-    obj->faceObjectCount = 0;
     obj->faceCount = 0;
     obj->faceElementCount = 9;
     if(obj->flags & NORMALS) obj->faceElementCount += 9;
@@ -78,7 +77,7 @@ void size(char* path, object* obj){
             if(count == 3) obj->faceCount += 2;
         }
         if(strcmp(temp, "usemtl") == 0){
-            obj->faceObjectCount++;
+            obj->materialIndexCount++;
         }
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));
@@ -91,7 +90,10 @@ void delete(object* obj){
     free(obj->textures);
     free(obj->normals);
     free(obj->faces);
-    free(obj->faceObjectIndices);
+    for(int i = 0; i < obj->materialIndexCount; i++){
+        free(obj->materialIndices[i].materialName);
+    }
+    free(obj->materialIndices);
     free(obj);
 }
 
@@ -133,7 +135,8 @@ void makeNormal(char* str, int* n, object* obj){
     }
 }
 
-void makeQuad(char* str, int* f, object* obj){
+void makeQuad(char* str, int* f, int* fc, object* obj){
+    *fc += 2;
     if(obj->flags == 0){
         //1 element per face
         int arr[4];
@@ -522,17 +525,20 @@ void makeQuad(char* str, int* f, object* obj){
 }
 
 //better names in this function signature, consider doing this elsewhere.
-void makeMaterialIndex(char* str, int faceCurrentIndex, int* materialIndexCurrentIndex, object* obj){
+int test = -1;
+void makeMaterialIndex(char* str, int faceCountCurrentIndex, int* materialIndicesCurrentIndex, object* obj){
+    //printf("%s : %i\n", (obj->materialIndices[test]).materialName, obj->materialIndices[test++].index);
     materialIndex* temp = malloc(sizeof(materialIndex));
-    temp->index = faceCurrentIndex;
+    temp->index = faceCountCurrentIndex;
     char* slice = str + 6;
     temp->materialName = malloc(strlen(slice) + 1);
     strcpy(temp->materialName, slice);
-    obj->faceObjectIndices[(*materialIndexCurrentIndex)++] = *temp;
-    printf("%i\n", obj->materialIndexCount++);
+    obj->materialIndices[(*materialIndicesCurrentIndex)++] = *temp;
+    //printf("%s : %i\n", (obj->materialIndices[*materialIndicesCurrentIndex - 1]).materialName, obj->materialIndices[*materialIndicesCurrentIndex - 1].index);
 }
 
-void makeTri(char* str, int* f, object* obj){
+void makeTri(char* str, int* f, int* fc, object* obj){
+    *fc += 1;
     //no normals, no textures
     if(obj->flags == 0){
         int arr[3];
@@ -762,7 +768,7 @@ void makeTri(char* str, int* f, object* obj){
         return;
     }
 }
-void makeFace(char* str, int* f, object* obj){
+void makeFace(char* str, int* f, int* fc, object* obj){
     int faceCountInLine = 0;
     for(int i = 2; i < 100; i++){
         if(str[i] == '\n' || str[i] == '\0'){
@@ -774,8 +780,8 @@ void makeFace(char* str, int* f, object* obj){
             if(str[i+1] == ' ' || str[i+1] == '\n') break;
         }
     }
-    if(faceCountInLine == 3) makeTri(str, f, obj);
-    if(faceCountInLine == 4) makeQuad(str, f, obj);
+    if(faceCountInLine == 3) makeTri(str, f, fc, obj);
+    if(faceCountInLine == 4) makeQuad(str, f, fc, obj);
 }
 
 void setFlags(char* path, object* obj){
