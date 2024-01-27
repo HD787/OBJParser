@@ -21,11 +21,11 @@ int main(){
     //printBinary(obj->flags);
 
     int test = 0;
-    // for(int i = 0; i <= 20; i++){
-    //     printf("%s", (obj->faceObjectIndices[70]).materialName);
-    // }
-    printf("%i\n", obj->materialIndexCount);
-    printf("%i", (obj->faceObjectIndices[1]).index);
+    for(int i = 0; i <= 20; i++){
+        printf("%s : %i\n", (obj->faceObjectIndices[i]).materialName, obj->faceObjectIndices[i].index);
+    }
+    // printf("%i\n", obj->materialIndexCount);
+    // printf("%i", (obj->faceObjectIndices[1]).index);
     
     //printf("\n%f", obj->faces[300]);
     delete(obj);
