@@ -34,3 +34,24 @@ typedef struct{
     
 }object;
 
+typedef struct{
+    char* name;
+    //Ka
+    float ambient[3];
+    //Kd
+    float diffuse[3];
+    //Ks
+    float specular[3];
+    //Ns
+    float specularExponent;
+    //d
+    float dissolve;
+    //illum
+    int illuminationModel;
+    //Ni
+    float opticalDensity;
+    //Ke
+    float emmisiveColor[3];
+
+}material;
+
