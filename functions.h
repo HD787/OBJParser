@@ -1,4 +1,5 @@
 #include "types.h"
+#include "mtlParser.c"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

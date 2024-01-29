@@ -20,18 +20,13 @@ typedef struct{
     float* faces;
     int faceCount;
     int faceElementCount;
-    
-
 
     materialIndex* materialIndices;
     int materialIndexCount;
     //the number of face objects denoted by a usemtl tag
     int faceObjectCount;
     
-
-
     unsigned int flags;
-    
 }object;
 
 typedef struct{
