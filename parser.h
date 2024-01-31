@@ -13,6 +13,7 @@ void parse(char* path, object* obj){
     obj->materialIndices = malloc(sizeof(materialIndex) * obj->materialIndexCount);
     //obj->faces = malloc(sizeof(float) * 1000);
 
+    //wrap this in a struct??
     int vectorCurrentIndex = 0, 
         normalCurrentIndex = 0, 
         textureCurrentIndex = 0,
