@@ -17,6 +17,11 @@ typedef struct{
     //Ke
     float emmisiveColor[3];
 
+    char* map_KdPath;
+    char* map_nsPath;
+    char* map_reflPath
+    char* map_bumpPath
+
 }material;
 
 typedef struct{
@@ -50,6 +55,7 @@ typedef struct{
     int faceObjectCount;
     
     unsigned int flags;
+    char* mtlPath;
 }object;
 
 

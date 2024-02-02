@@ -1,8 +1,10 @@
 #include <stdio.h>
-#include "functions.h"
-//#include "types.h"
-#include "string.h"
-void parse(char* path, object* obj){
+#include <string.h>
+#include "privateFunctions.h"
+#include "types.h"
+#include "mtlParser.h"
+object* parse(char* path){
+    object* obj = malloc(sizeof(object));
     setFlags(path, obj);
     size(path, obj);
     // printf("%i\n", obj->faceCount);
@@ -73,7 +75,10 @@ void parse(char* path, object* obj){
         //smooth shading??
         if(strcmp(temp, "s")){}
 
-        if(strcmp(temp, "mtllib")){}
+        if(strcmp(temp, "mtllib")){
+            char* slice = buf + 5;
+            obj->mtlPath = silce;
+        }
         //printf("%s\n", buf);
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));

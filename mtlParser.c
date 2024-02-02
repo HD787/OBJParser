@@ -1,7 +1,10 @@
 #include "types.h"
+#include "privateMtlFunctions.h"
 
 //
 void parseMtl(object* obj, char path){
+    int size = size()
+    //malloc in some array the value size * sizeof(material)
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no mtl file :(");
