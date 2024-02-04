@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "privateFunctions.h"
+#include "privateMtlFunctions.h"
 #include "types.h"
-#include "mtlParser.h"
 object* parse(char* path){
     object* obj = malloc(sizeof(object));
     setFlags(path, obj);
@@ -25,6 +25,7 @@ object* parse(char* path){
         //this is keeps track of a full face object, so a tri is one and a quad is two
         //so if you multiply this number by the length of faceElementCount you'll get the right index
         faceCountCurrentIndex = 0;
+        //materialTempArrayCurrentIndex = 0;
 
 
     FILE* file = fopen(path, "r");
@@ -77,11 +78,15 @@ object* parse(char* path){
 
         if(strcmp(temp, "mtllib")){
             char* slice = buf + 5;
-            obj->mtlPath = silce;
+            obj->mtlPath = slice;
         }
         //printf("%s\n", buf);
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
     fclose(file);
+    materialTempArraySize = sizeMtl(obj);
+    material* materialTempArray = malloc(sizeof(material) * materialTempArraySize);
+    hashMap* hm = createHashMap();
+    parseMtl
 }

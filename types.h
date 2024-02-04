@@ -1,26 +1,19 @@
 typedef struct{
     char* name;
-    //Ka
-    float ambient[3];
-    //Kd
-    float diffuse[3];
-    //Ks
-    float specular[3];
-    //Ns
-    float specularExponent;
-    //d
-    float dissolve;
-    //illum
-    int illuminationModel;
-    //Ni
-    float opticalDensity;
-    //Ke
-    float emmisiveColor[3];
-
+    float Ka[3]; //ambient
+    float Kd[3]; //diffuse
+    float Ks[3]; //specular   
+    float Ke[3];  //emisive color
+    float Kt[3]; //transmittence
+    float Ns; //specularExponent
+    float Ni; //optical density
+    float Tf[3]; //transmission filter
+    float d; //dissolve
+    int illum; //illuminamtionModel
     char* map_KdPath;
     char* map_nsPath;
     char* map_reflPath
-    char* map_bumpPath
+    char* map_bumpPath;
 
 }material;
 
