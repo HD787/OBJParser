@@ -154,5 +154,9 @@ void parseMtl(object* obj, hashMap* hm){
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
+    if(tempMtl != NULL){
+        insert(hm, tempMtl->name, tempMtl);
+        free(tempMtl);
+    }
     fclose(file);
 }
