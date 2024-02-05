@@ -11,9 +11,13 @@ typedef struct{
     float d; //dissolve
     int illum; //illuminamtionModel
     char* map_KdPath;
-    char* map_nsPath;
-    char* map_reflPath
-    char* map_bumpPath;
+    char* map_KaPath;
+    char* map_KsPath;
+    char* map_KePath;
+    char* map_KtPath;
+    char* map_NsPath;
+    char* map_reflPath;
+    char* map_BumpPath;
 
 }material;
 
