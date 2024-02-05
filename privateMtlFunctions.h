@@ -77,7 +77,7 @@ void parseMtl(object* obj, hashMap* hm){
                 tempMtl->name = slice
             }
             else{
-                insert(hm, tempMtl->name, tempMtl);
+                insert(hm, tempMtl->name, tempMtl, sizeof(material));
                 free(tempMtl);
                 tempMtl = malloc(sizeof(material));
                 tempMtl->name = slice;
@@ -155,7 +155,7 @@ void parseMtl(object* obj, hashMap* hm){
         memset(temp, 0, sizeof(temp));
     }
     if(tempMtl != NULL){
-        insert(hm, tempMtl->name, tempMtl);
+        insert(hm, tempMtl->name, tempMtl, sizeof(material));
         free(tempMtl);
     }
     fclose(file);
