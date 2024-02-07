@@ -4,12 +4,11 @@
 //this is deprecated i guess
 int MtlSize(object* obj){
     int sizeMtl = 0;
-    path = obj->mtlPath;
-    FILE* file = fopen(path, "r");
+    FILE* file = fopen(obj->mtlPath, "r");
     if(file == NULL){
         printf("no file :(");
         fclose(file);
-        return;
+        return NULL;
     }
     char buf[100];
     while(fgets(buf, sizeof(buf), file)) {
@@ -22,18 +21,18 @@ int MtlSize(object* obj){
         }
         //vertex
         if(strcmp(temp, "newmtl") == 0){
-            size++;
+            sizeMtl++;
         }
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
-    return size;
+    return sizeMtl;
 }
 
 void parseThreeFloatArray(float* arr, char* buf){
-    char *endptr;
-    buf += 3;
-    char* tokens = strtok(buf, " ");
+    char* endptr;
+    char* slice = buf + 3;
+    char* tokens = strtok(slice, " ");
     for(int i = 0; i < 3; i++){
         arr[i] = strtof(tokens, &endptr);
         tokens = endptr + 1;
@@ -41,14 +40,14 @@ void parseThreeFloatArray(float* arr, char* buf){
 }
 
 void parseFloat(float* val, char* buf){
-    char *endptr;
-    buf += 3;
-    *val = strtof(buf, &endptr);
+    char* endptr;
+    char* slice = buf + 3;
+    *val = strtof(slice, &endptr);
 }
 
 void parseMtl(object* obj, hashMap* hm){
-    int size = size()
-    FILE* file = fopen(path, "r");
+    //int size = MtlSize();
+    FILE* file = fopen(obj->mtlPath, "r");
     if(file == NULL){
         printf("no mtl file :(");
         fclose(file);
@@ -68,7 +67,7 @@ void parseMtl(object* obj, hashMap* hm){
             char* slice = buf + 6;
             if(tempMtl == NULL){
                 tempMtl = malloc(sizeof(material));
-                tempMtl->name = slice
+                tempMtl->name = slice;
             }
             else{
                 insert(hm, tempMtl->name, tempMtl, sizeof(material));
@@ -103,14 +102,14 @@ void parseMtl(object* obj, hashMap* hm){
             parseThreeFloatArray(tempMtl->Tf, buf);
         }
         if(strcmp(temp, "d") == 0){
-            char* endptr
-            buf+=2;
-            tempMtl->d = strtof(buf, &endptr); 
+            char* endptr;
+            char* slice = buf+ 2;
+            tempMtl->d = strtof(slice, &endptr); 
         }
         if(strcmp(temp, "illum") == 0){
-            char* endptr
-            buf += 6;
-            tempMtl->d = strtol(buf, &endptr);
+            char* endptr;
+            char* slice = buf + 6;
+            tempMtl->d = strtol(slice, &endptr, 10);
         }
         if(strcmp(temp, "map_Kd")){
             char* slice = buf + 6;

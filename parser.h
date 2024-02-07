@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "privateFunctions.h"
-#include "privateMtlFunctions.h"
-#include "types.h"
+
 object* parse(char* path){
     object* obj = malloc(sizeof(object));
     setFlags(path, obj);
@@ -32,7 +31,7 @@ object* parse(char* path){
     if(file == NULL){
         printf("no file :(");
         fclose(file);
-        return;
+        return NULL;
     }
     char buf[100];
     while(fgets(buf, sizeof(buf), file)) {
@@ -85,8 +84,9 @@ object* parse(char* path){
         memset(temp, 0, sizeof(temp));
     }
     fclose(file);
-    materialTempArraySize = sizeMtl(obj);
-    material* materialTempArray = malloc(sizeof(material) * materialTempArraySize);
+    //since im using hashmap i dont think these are needed
+    //materialTempArraySize = sizeMtl(obj);
+    //material* materialTempArray = malloc(sizeof(material) * materialTempArraySize);
     hashMap* hm = createHashMap();
     parseMtl(obj, hm);
 }
