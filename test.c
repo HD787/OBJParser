@@ -9,7 +9,7 @@ void printBinary(unsigned int num) {
 
 int main(){
     object* obj = malloc(sizeof(object));
-    parse("cube.obj", obj);
+    object* obj = parse("cube.obj");
     //parse("../copengl/pirate_gold_copy.obj", obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 

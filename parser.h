@@ -88,5 +88,5 @@ object* parse(char* path){
     materialTempArraySize = sizeMtl(obj);
     material* materialTempArray = malloc(sizeof(material) * materialTempArraySize);
     hashMap* hm = createHashMap();
-    parseMtl
+    parseMtl(obj, hm);
 }
