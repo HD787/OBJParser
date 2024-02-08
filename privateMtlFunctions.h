@@ -1,5 +1,6 @@
 #include "hashMap/hashMap.h"
 #include "types.h"
+#include <errno.h>
 
 void parseThreeFloatArray(float* arr, char* buf){
     char* endptr;
@@ -18,9 +19,10 @@ void parseFloat(float* val, char* buf){
 }
 
 void parseMtl(object* obj, hashMap* hm){
-    //int size = MtlSize();
+    printf("%s", obj->mtlPath);
     FILE* file = fopen(obj->mtlPath, "r");
     if(file == NULL){
+        printf("Error opening file: %s\n", strerror(errno));
         printf("no mtl file :(");
         fclose(file);
         return;
@@ -39,13 +41,15 @@ void parseMtl(object* obj, hashMap* hm){
             char* slice = buf + 6;
             if(tempMtl == NULL){
                 tempMtl = malloc(sizeof(material));
-                tempMtl->name = slice;
+                tempMtl->name = malloc(strlen(slice));
+                strcpy(tempMtl->name, slice);
             }
             else{
-                //insert(hm, tempMtl->name, tempMtl, sizeof(material));
+                insert(hm, tempMtl->name, tempMtl, sizeof(material));
                 free(tempMtl);
                 tempMtl = malloc(sizeof(material));
-                tempMtl->name = slice;
+                tempMtl->name = malloc(strlen(slice));
+                strcpy(tempMtl->name, slice);
             }
 
         }
@@ -85,42 +89,49 @@ void parseMtl(object* obj, hashMap* hm){
         }
         if(strcmp(temp, "map_Kd")){
             char* slice = buf + 6;
-            tempMtl->map_KdPath = slice;
+            tempMtl->map_KdPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Ka")){
             char* slice = buf + 6;
-            tempMtl->map_KaPath = slice;
+            tempMtl->map_KdPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KaPath, slice);
         }
         if(strcmp(temp, "map_Ks")){
             char* slice = buf + 6;
-            tempMtl->map_KsPath = slice;
+            tempMtl->map_KdPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KsPath, slice);
         }
         if(strcmp(temp, "map_Ke")){
             char* slice = buf + 6;
-            tempMtl->map_KePath = slice;
+            tempMtl->map_KePath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Kt")){
             char* slice = buf + 6;
-            tempMtl->map_KtPath = slice;
+            tempMtl->map_KtPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Ns")){
             char* slice = buf + 6;
-            tempMtl->map_NsPath = slice;
+            tempMtl->map_NsPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_refl")){
             char* slice = buf + 8;
-            tempMtl->map_reflPath = slice;
+            tempMtl->map_reflPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Bump")){
             char* slice = buf + 8;
-            tempMtl->map_BumpPath = slice;
+            tempMtl->map_BumpPath = malloc(strlen(slice));
+            strcpy(tempMtl->map_BumpPath, slice);
         }
-
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
     if(tempMtl != NULL){
-        //insert(hm, tempMtl->name, tempMtl, sizeof(material));
+        insert(hm, tempMtl->name, tempMtl, sizeof(material));
         free(tempMtl);
     }
     fclose(file);

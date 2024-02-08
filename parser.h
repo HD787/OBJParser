@@ -56,39 +56,38 @@ object* parse(char* path){
         }
         //face
         if(strcmp(temp, "f") == 0){
-            //printf(" %i ", test++);
             makeFace(buf, &faceCurrentIndex, &faceCountCurrentIndex, obj);
         }
         //object name
-        if(strcmp(temp, "o")){}
+        if(strcmp(temp, "o") == 0){}
 
         //group name
-        if(strcmp(temp, "g")){}
+        if(strcmp(temp, "g") == 0){}
 
         //defines material to be used until another is specified
         if(strcmp(temp, "usemtl") == 0){
-            //printf("this should happen once");
             //faceCurrentIndex can be passed in directly as it's not modified
             makeMaterialIndex(buf, faceCountCurrentIndex, &materialIndexCurrentIndex, obj);
         }
 
         //smooth shading??
-        if(strcmp(temp, "s")){}
+        if(strcmp(temp, "s") == 0){}
 
-        if(strcmp(temp, "mtllib")){
-            char* slice = buf + 5;
-            obj->mtlPath = slice;
+        if(strcmp(temp, "mtllib") == 0){
+            
+            char* slice = buf + 7;
+            obj->mtlPath = malloc(strlen(slice));
+            strcpy(obj->mtlPath, slice);
         }
-        //printf("%s\n", buf);
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
     fclose(file);
-    //since im using hashmap i dont think these are needed
-    //materialTempArraySize = sizeMtl(obj);
-    //material* materialTempArray = malloc(sizeof(material) * materialTempArraySize);
     hashMap* hm = createHashMap(obj->materialIndexCount);
     parseMtl(obj, hm);
-    for(int i = 0; i < obj)
+    for(int i = 0; i < obj->materialIndexCount; i++){
+        value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
+        //obj->materialIndices[i].materialObject = (material*)tempVal->data;
+    }
     return obj;
 }

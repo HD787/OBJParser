@@ -8,7 +8,7 @@ void printBinary(unsigned int num) {
 }
 
 int main(){
-    object* obj = parse("cube.obj");
+    object* obj = parse("example.obj");
     //parse("../copengl/pirate_gold_copy.obj", obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 
