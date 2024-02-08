@@ -89,5 +89,6 @@ object* parse(char* path){
     //material* materialTempArray = malloc(sizeof(material) * materialTempArraySize);
     hashMap* hm = createHashMap(obj->materialIndexCount);
     parseMtl(obj, hm);
+    for(int i = 0; i < obj)
     return obj;
 }
