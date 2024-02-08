@@ -1,34 +1,6 @@
 #include "hashMap/hashMap.h"
 #include "types.h"
 
-//this is deprecated i guess
-int MtlSize(object* obj){
-    int sizeMtl = 0;
-    FILE* file = fopen(obj->mtlPath, "r");
-    if(file == NULL){
-        printf("no file :(");
-        fclose(file);
-        return NULL;
-    }
-    char buf[100];
-    while(fgets(buf, sizeof(buf), file)) {
-        char temp[10];
-        for(int i = 0; i < 10; ++i){
-            if(buf[i] == ' ' || buf[i] == '#'){
-                break;
-            }
-            temp[i] = buf[i];
-        }
-        //vertex
-        if(strcmp(temp, "newmtl") == 0){
-            sizeMtl++;
-        }
-        memset(buf, 0, sizeof(buf));
-        memset(temp, 0, sizeof(temp));
-    }
-    return sizeMtl;
-}
-
 void parseThreeFloatArray(float* arr, char* buf){
     char* endptr;
     char* slice = buf + 3;
@@ -70,7 +42,7 @@ void parseMtl(object* obj, hashMap* hm){
                 tempMtl->name = slice;
             }
             else{
-                insert(hm, tempMtl->name, tempMtl, sizeof(material));
+                //insert(hm, tempMtl->name, tempMtl, sizeof(material));
                 free(tempMtl);
                 tempMtl = malloc(sizeof(material));
                 tempMtl->name = slice;
@@ -148,7 +120,7 @@ void parseMtl(object* obj, hashMap* hm){
         memset(temp, 0, sizeof(temp));
     }
     if(tempMtl != NULL){
-        insert(hm, tempMtl->name, tempMtl, sizeof(material));
+        //insert(hm, tempMtl->name, tempMtl, sizeof(material));
         free(tempMtl);
     }
     fclose(file);
