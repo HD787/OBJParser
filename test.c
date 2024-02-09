@@ -8,7 +8,8 @@ void printBinary(unsigned int num) {
 }
 
 int main(){
-    object* obj = parse("example.obj");
+    char* val = "example.obj";
+    object* obj = parse(val);
     //parse("../copengl/pirate_gold_copy.obj", obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 
@@ -30,4 +31,9 @@ int main(){
     printf("%i", obj->materialIndices[1].index * obj->faceElementCount);
     //printf("\n%f", obj->faces[300]);
     delete(obj);
+
+    // hashMap* hm = createHashMap(17);
+    // object* obj;
+    // obj->mtlPath = "example.obj";
+    // parseMtl(obj, hm);
 } 

@@ -74,10 +74,11 @@ object* parse(char* path){
         if(strcmp(temp, "s") == 0){}
 
         if(strcmp(temp, "mtllib") == 0){
-            
             char* slice = buf + 7;
             obj->mtlPath = malloc(strlen(slice));
             strcpy(obj->mtlPath, slice);
+            char* p = strchr(obj->mtlPath, '\n');
+            if (p) *p = '\0';
         }
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
@@ -87,7 +88,7 @@ object* parse(char* path){
     parseMtl(obj, hm);
     for(int i = 0; i < obj->materialIndexCount; i++){
         value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
-        //obj->materialIndices[i].materialObject = (material*)tempVal->data;
+        obj->materialIndices[i].materialObject = (material*)tempVal->data;
     }
     return obj;
 }

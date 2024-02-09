@@ -1,6 +1,7 @@
 #include "hashMap/hashMap.h"
 #include "types.h"
 #include <errno.h>
+#include <unistd.h>
 
 void parseThreeFloatArray(float* arr, char* buf){
     char* endptr;
@@ -19,12 +20,11 @@ void parseFloat(float* val, char* buf){
 }
 
 void parseMtl(object* obj, hashMap* hm){
-    printf("%s", obj->mtlPath);
+    printf("here");
     FILE* file = fopen(obj->mtlPath, "r");
     if(file == NULL){
         printf("Error opening file: %s\n", strerror(errno));
         printf("no mtl file :(");
-        fclose(file);
         return;
     }
     char buf[200];
@@ -41,14 +41,14 @@ void parseMtl(object* obj, hashMap* hm){
             char* slice = buf + 6;
             if(tempMtl == NULL){
                 tempMtl = malloc(sizeof(material));
-                tempMtl->name = malloc(strlen(slice));
+                tempMtl->name = malloc(strlen(slice) + 1);
                 strcpy(tempMtl->name, slice);
             }
             else{
                 insert(hm, tempMtl->name, tempMtl, sizeof(material));
                 free(tempMtl);
                 tempMtl = malloc(sizeof(material));
-                tempMtl->name = malloc(strlen(slice));
+                tempMtl->name = malloc(strlen(slice) + 1);
                 strcpy(tempMtl->name, slice);
             }
 
@@ -57,7 +57,7 @@ void parseMtl(object* obj, hashMap* hm){
             parseThreeFloatArray(tempMtl->Ka, buf);
         }
         if(strcmp(temp, "Kd") == 0){
-           parseThreeFloatArray(tempMtl->Kd, buf);
+            parseThreeFloatArray(tempMtl->Kd, buf);
         }
         if(strcmp(temp, "Ks") == 0){
             parseThreeFloatArray(tempMtl->Ks, buf);
@@ -87,44 +87,44 @@ void parseMtl(object* obj, hashMap* hm){
             char* slice = buf + 6;
             tempMtl->d = strtol(slice, &endptr, 10);
         }
-        if(strcmp(temp, "map_Kd")){
+        if(strcmp(temp, "map_Kd") == 0){
             char* slice = buf + 6;
-            tempMtl->map_KdPath = malloc(strlen(slice));
+            tempMtl->map_KdPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
-        if(strcmp(temp, "map_Ka")){
+        if(strcmp(temp, "map_Ka") == 0){
             char* slice = buf + 6;
-            tempMtl->map_KdPath = malloc(strlen(slice));
+            tempMtl->map_KdPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KaPath, slice);
         }
-        if(strcmp(temp, "map_Ks")){
+        if(strcmp(temp, "map_Ks") == 0){
             char* slice = buf + 6;
-            tempMtl->map_KdPath = malloc(strlen(slice));
+            tempMtl->map_KdPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KsPath, slice);
         }
-        if(strcmp(temp, "map_Ke")){
+        if(strcmp(temp, "map_Ke") == 0){
             char* slice = buf + 6;
-            tempMtl->map_KePath = malloc(strlen(slice));
+            tempMtl->map_KePath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
-        if(strcmp(temp, "map_Kt")){
+        if(strcmp(temp, "map_Kt") == 0){
             char* slice = buf + 6;
-            tempMtl->map_KtPath = malloc(strlen(slice));
+            tempMtl->map_KtPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
-        if(strcmp(temp, "map_Ns")){
+        if(strcmp(temp, "map_Ns") == 0){
             char* slice = buf + 6;
-            tempMtl->map_NsPath = malloc(strlen(slice));
+            tempMtl->map_NsPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
-        if(strcmp(temp, "map_refl")){
+        if(strcmp(temp, "map_refl") == 0){
             char* slice = buf + 8;
-            tempMtl->map_reflPath = malloc(strlen(slice));
+            tempMtl->map_reflPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
-        if(strcmp(temp, "map_Bump")){
+        if(strcmp(temp, "map_Bump") == 0){
             char* slice = buf + 8;
-            tempMtl->map_BumpPath = malloc(strlen(slice));
+            tempMtl->map_BumpPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_BumpPath, slice);
         }
         memset(buf, 0, sizeof(buf));
