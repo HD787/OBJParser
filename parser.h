@@ -6,13 +6,11 @@ object* parse(char* path){
     object* obj = malloc(sizeof(object));
     setFlags(path, obj);
     size(path, obj);
-    // printf("%i\n", obj->faceCount);
     obj->vertices = malloc(sizeof(float) * obj->vertexCount * obj->vertexElementCount);
     obj->textures = malloc(sizeof(float) * obj->textureCount * obj->textureElementCount);
     obj->normals = malloc(sizeof(float) * obj->normalCount * obj->normalElementCount);
     obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
     obj->materialIndices = malloc(sizeof(materialIndex) * obj->materialIndexCount);
-    //obj->faces = malloc(sizeof(float) * 1000);
 
     //wrap this in a struct??
     int vectorCurrentIndex = 0, 
@@ -24,7 +22,6 @@ object* parse(char* path){
         //this is keeps track of a full face object, so a tri is one and a quad is two
         //so if you multiply this number by the length of faceElementCount you'll get the right index
         faceCountCurrentIndex = 0;
-        //materialTempArrayCurrentIndex = 0;
 
 
     FILE* file = fopen(path, "r");

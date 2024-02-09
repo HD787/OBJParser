@@ -1,7 +1,5 @@
 #include "hashMap/hashMap.h"
 #include "types.h"
-#include <errno.h>
-#include <unistd.h>
 
 void parseThreeFloatArray(float* arr, char* buf){
     char* endptr;
@@ -20,10 +18,8 @@ void parseFloat(float* val, char* buf){
 }
 
 void parseMtl(object* obj, hashMap* hm){
-    printf("here");
     FILE* file = fopen(obj->mtlPath, "r");
     if(file == NULL){
-        printf("Error opening file: %s\n", strerror(errno));
         printf("no mtl file :(");
         return;
     }
