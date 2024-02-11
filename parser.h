@@ -89,3 +89,17 @@ object* parse(char* path){
     }
     return obj;
 }
+
+void delete(object* obj){
+    free(obj->vertices);
+    free(obj->textures);
+    free(obj->normals);
+    free(obj->faces);
+    for(int i = 0; i < obj->materialIndexCount; i++){
+        free(obj->materialIndices[i].materialName);
+    }
+    free(obj->materialIndices);
+    free(obj);
+}
+
+//consider a using gettter like functions for better organization, all public functions will be here

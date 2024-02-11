@@ -86,18 +86,6 @@ void size(char* path, object* obj){
    
 }
 
-void delete(object* obj){
-    free(obj->vertices);
-    free(obj->textures);
-    free(obj->normals);
-    free(obj->faces);
-    for(int i = 0; i < obj->materialIndexCount; i++){
-        free(obj->materialIndices[i].materialName);
-    }
-    free(obj->materialIndices);
-    free(obj);
-}
-
 void makeVertex(char* str, int* v, object* obj){
     char * endptr;
     str += 2; 
@@ -526,7 +514,6 @@ void makeQuad(char* str, int* f, int* fc, object* obj){
 }
 
 //better names in this function signature, consider doing this elsewhere.
-int test = -1;
 void makeMaterialIndex(char* str, int faceCountCurrentIndex, int* materialIndicesCurrentIndex, object* obj){
     //printf("%s : %i\n", (obj->materialIndices[test]).materialName, obj->materialIndices[test++].index);
     materialIndex* temp = malloc(sizeof(materialIndex));
