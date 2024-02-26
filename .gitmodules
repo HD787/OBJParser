@@ -1,0 +1,3 @@
+[submodule "hashMap"]
+    path = hashMap
+    url = https://github.com/HD787/HashMap
