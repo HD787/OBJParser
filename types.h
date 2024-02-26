@@ -53,6 +53,15 @@ typedef struct{
     
     unsigned int flags;
     char* mtlPath;
+
+    //bounding box values
+    float minX;
+    float minY;
+    float minZ;
+
+    float maxX;
+    float maxY;
+    float maxZ;
 }object;
 
 
