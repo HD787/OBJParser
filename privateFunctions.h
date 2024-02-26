@@ -37,6 +37,15 @@ void size(char* path, object* obj){
     //instantiate face index for materials vals
     obj->materialIndexCount = 0;
 
+    //instantiate bounding box values
+    obj->minX = 0.0;
+    obj->minY = 0.0;
+    obj->minZ = 0.0;
+
+    obj->maxX = 0.0;
+    obj->maxY = 0.0;
+    obj->maxZ = 0.0;
+
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
@@ -89,10 +98,23 @@ void size(char* path, object* obj){
 void makeVertex(char* str, int* v, object* obj){
     char * endptr;
     str += 2; 
+    unsigned char i = 0;
     while(*str != '\0'){
         float val;
         obj->vertices[*v] = val = strtof(str, &endptr);
-        //printf(" %f ", val);
+        if(i == 0){
+            if(val < obj->minX) obj->minX = val;
+            if(val > obj->maxX) obj->maxX = val;
+        }
+        if(i == 1){
+            if(val < obj->miny) obj->miny = val;
+            if(val > obj->maxy) obj->maxy = val;
+        }
+        if(i == 2){
+            if(val < obj->minZ) obj->minZ = val;
+            if(val > obj->maxZ) obj->maxZ = val;
+        }
+        i++;
         (*v)++;
         if(*endptr != '\0')
             str = endptr + 1;
