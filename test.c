@@ -8,8 +8,8 @@ void printBinary(unsigned int num) {
 }
 
 int main(){
-    char* val = "pirate_gold.obj";
-    object* obj = parse(val);
+    char* val = "cube.obj";
+    object* obj = parse("cube.obj");
     //parse("../copengl/pirate_gold_copy.obj", obj);
     //printf("%f, %f, %f", vertices[1], vertices[1], vertices[1]);
 
@@ -20,15 +20,16 @@ int main(){
     //printf("%d, here", obj->flags);
     //printBinary(obj->flags);
     //printf("%s : %i\n", (obj->materialIndices[0]).materialName, obj->materialIndices[0].index);
-    int test = 0;
-    // for(int i = 0; i < obj->materialIndexCount; i++){
-    //     printf("%s : %i\n", (obj->materialIndices[i]).materialName, obj->materialIndices[i].index);
+    // int test = 0;
+    // for(int i = 0; i < obj->faceCount; i++){
+    //     printf("%f\n", obj->faces[i]);
     // }
+    //printf("%f\n", obj->faces[10]);
     // printf("%i\n", obj->materialIndexCount);
-    printf("%i\n", obj->faceCount);
-    printf("%i\n",obj->faceElementCount);
-    printf("%i\n", obj->materialIndices[1].index);
-    printf("%i", obj->materialIndices[1].index * obj->faceElementCount);
+    // printf("%i\n", obj->faceCount);
+    // printf("%i\n",obj->faceElementCount);
+    // printf("%i\n", obj->materialIndices[1].index);
+    // printf("%i", obj->materialIndices[1].index * obj->faceElementCount);
     //printf("\n%f", obj->faces[300]);
     delete(obj);
 

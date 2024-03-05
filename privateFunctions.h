@@ -107,8 +107,8 @@ void makeVertex(char* str, int* v, object* obj){
             if(val > obj->maxX) obj->maxX = val;
         }
         if(i == 1){
-            if(val < obj->miny) obj->miny = val;
-            if(val > obj->maxy) obj->maxy = val;
+            if(val < obj->minY) obj->minY = val;
+            if(val > obj->maxY) obj->maxY = val;
         }
         if(i == 2){
             if(val < obj->minZ) obj->minZ = val;
