@@ -1,3 +1,4 @@
+#include "hashMap/hashMap.h"
 typedef struct{
     char* name;
     float Ka[3]; //ambient

@@ -1,6 +1,4 @@
-#include "hashMap/hashMap.h"
 #include "types.h"
-
 void parseThreeFloatArray(float* arr, char* buf){
     char* endptr;
     char* slice = buf + 3;
