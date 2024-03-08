@@ -92,7 +92,6 @@ void size(char* path, object* obj){
         memset(temp, 0, sizeof(temp));
         memset(buf, 0, sizeof(buf));
     }
-   
 }
 
 void makeVertex(char* str, int* v, object* obj){
@@ -537,14 +536,13 @@ void makeQuad(char* str, int* f, int* fc, object* obj){
 
 //better names in this function signature, consider doing this elsewhere.
 void makeMaterialIndex(char* str, int faceCountCurrentIndex, int* materialIndicesCurrentIndex, object* obj){
-    //printf("%s : %i\n", (obj->materialIndices[test]).materialName, obj->materialIndices[test++].index);
     materialIndex* temp = malloc(sizeof(materialIndex));
     temp->index = faceCountCurrentIndex;
-    char* slice = str + 6;
-    temp->materialName = malloc(strlen(slice) + 1);
-    strcpy(temp->materialName, slice);
+    temp->materialName = malloc(strlen(str));
+    strcpy(temp->materialName, str);
+    printf("%i", faceCountCurrentIndex);
     obj->materialIndices[(*materialIndicesCurrentIndex)++] = *temp;
-    //printf("%s : %i\n", (obj->materialIndices[*materialIndicesCurrentIndex - 1]).materialName, obj->materialIndices[*materialIndicesCurrentIndex - 1].index);
+    free(temp);
 }
 
 void makeTri(char* str, int* f, int* fc, object* obj){

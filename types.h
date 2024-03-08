@@ -26,7 +26,6 @@ typedef struct{
     int index;
     char* materialName;
     material* materialObject;
-
 }materialIndex;
 
 
@@ -49,6 +48,8 @@ typedef struct{
 
     materialIndex* materialIndices;
     int materialIndexCount;
+    //this would be the hashmap containing the materials themselves
+    hashMap* materialObjects;
     //the number of face objects denoted by a usemtl tag
     int faceObjectCount;
     

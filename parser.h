@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "privateFunctions.h"
-
 object* parse(char* path){
     object* obj = malloc(sizeof(object));
     setFlags(path, obj);
@@ -62,9 +61,15 @@ object* parse(char* path){
         if(strcmp(temp, "g") == 0){}
 
         //defines material to be used until another is specified
+
         if(strcmp(temp, "usemtl") == 0){
             //faceCurrentIndex can be passed in directly as it's not modified
-            makeMaterialIndex(buf, faceCountCurrentIndex, &materialIndexCurrentIndex, obj);
+            char* temp = buf;
+            char* p = strchr(temp, '\n');
+            if (p) *p = '\0';
+            temp += 7;
+            //printf("%s\n", temp);
+            makeMaterialIndex(temp, faceCountCurrentIndex, &materialIndexCurrentIndex, obj);
         }
 
         //smooth shading??
@@ -84,8 +89,8 @@ object* parse(char* path){
     hashMap* hm = createHashMap(obj->materialIndexCount);
     parseMtl(obj, hm);
     for(int i = 0; i < obj->materialIndexCount; i++){
-        value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
-        obj->materialIndices[i].materialObject = (material*)tempVal->data;
+        // value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
+        // obj->materialIndices[i].materialObject = (material*)tempVal->data;
     }
     return obj;
 }
