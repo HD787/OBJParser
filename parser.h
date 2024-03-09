@@ -107,4 +107,9 @@ void delete(object* obj){
     free(obj);
 }
 
+material* getMaterial(object obj, char* name){
+    material val = (material)lookUp(obj->materialObjects, name);
+    return val;
+}
+
 //consider a using gettter like functions for better organization, all public functions will be here
