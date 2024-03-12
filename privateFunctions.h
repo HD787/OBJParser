@@ -540,7 +540,6 @@ void makeMaterialIndex(char* str, int faceCountCurrentIndex, int* materialIndice
     temp->index = faceCountCurrentIndex;
     temp->materialName = malloc(strlen(str));
     strcpy(temp->materialName, str);
-    printf("%i", faceCountCurrentIndex);
     obj->materialIndices[(*materialIndicesCurrentIndex)++] = *temp;
     free(temp);
 }

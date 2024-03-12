@@ -126,6 +126,7 @@ void parseMtl(object* obj, hashMap* hm){
     }
     if(tempMtl != NULL){
         insert(hm, tempMtl->name, tempMtl, sizeof(material));
+        value* val = lookUp(hm, tempMtl->name);
         free(tempMtl);
     }
     fclose(file);

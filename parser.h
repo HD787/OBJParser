@@ -88,9 +88,13 @@ object* parse(char* path){
     fclose(file);
     hashMap* hm = createHashMap(obj->materialIndexCount);
     parseMtl(obj, hm);
+    printf("%i", hm->bucketCount);
+    obj->materialObjects = hm;
     for(int i = 0; i < obj->materialIndexCount; i++){
-        // value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
-        // obj->materialIndices[i].materialObject = (material*)tempVal->data;
+        //printf("%s", obj->materialIndices[i].materialName);
+        //value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
+        //printf("%s", tempVal->plainKey);
+        //obj->materialIndices[i].materialObject = (material*)tempVal->data;
     }
     return obj;
 }
@@ -107,9 +111,9 @@ void delete(object* obj){
     free(obj);
 }
 
-material* getMaterial(object obj, char* name){
-    material val = (material)lookUp(obj->materialObjects, name);
-    return val;
-}
+// material* getMaterial(object* obj, char* name){
+//     //value* val = lookUp(obj->materialObjects, name);
+//     //return (material*)val->data;
+// }
 
 //consider a using gettter like functions for better organization, all public functions will be here
