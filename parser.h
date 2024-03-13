@@ -92,9 +92,9 @@ object* parse(char* path){
     obj->materialObjects = hm;
     for(int i = 0; i < obj->materialIndexCount; i++){
         //printf("%s", obj->materialIndices[i].materialName);
-        //value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
+        value* tempVal = lookUp(hm, obj->materialIndices[i].materialName);
         //printf("%s", tempVal->plainKey);
-        //obj->materialIndices[i].materialObject = (material*)tempVal->data;
+        obj->materialIndices[i].materialObject = (material*)tempVal->data;
     }
     return obj;
 }
@@ -111,9 +111,9 @@ void delete(object* obj){
     free(obj);
 }
 
-// material* getMaterial(object* obj, char* name){
-//     //value* val = lookUp(obj->materialObjects, name);
-//     //return (material*)val->data;
-// }
+material* getMaterial(object* obj, char* name){
+    value* val = lookUp(obj->materialObjects, name);
+    return (material*)val->data;
+}
 
 //consider a using gettter like functions for better organization, all public functions will be here

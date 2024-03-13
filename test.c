@@ -34,9 +34,9 @@ int main(){
     int test = 0;
     //printf("%i", obj->materialIndexCount);
     for(int i = 0; i < obj->materialIndexCount; i++){
-        //material* mat = getMaterial(obj, obj->materialIndices[i].materialName);
-        //printf("%s", mat->map_BumpPath);
-        //printf("%s : %i : %i\n", obj->materialIndices[i].materialName,obj->materialIndices[i].index,test++);
+        material* mat = getMaterial(obj, obj->materialIndices[i].materialName);
+        printf("%s", mat->map_BumpPath);
+        printf("%s : %i : %i\n", obj->materialIndices[i].materialName,obj->materialIndices[i].index,test++);
     }
     
     delete(obj);
