@@ -41,7 +41,7 @@ void parseMtl(object* obj, hashMap* hm){
                 strcpy(tempMtl->name, slice);
             }
             else{
-                printf("%s : %s", tempMtl->name, tempMtl->map_BumpPath);
+                printf("%s : %s \n", tempMtl->name, tempMtl->map_BumpPath);
                 insert(hm, tempMtl->name, tempMtl, sizeof(material));
                 free(tempMtl);
                 tempMtl = malloc(sizeof(material));
