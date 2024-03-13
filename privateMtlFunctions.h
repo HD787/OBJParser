@@ -32,13 +32,16 @@ void parseMtl(object* obj, hashMap* hm){
             temp[i] = buf[i];
         }
         if(strcmp(temp, "newmtl") == 0){
-            char* slice = buf + 6;
+            char* slice = buf + 7;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             if(tempMtl == NULL){
                 tempMtl = malloc(sizeof(material));
                 tempMtl->name = malloc(strlen(slice) + 1);
                 strcpy(tempMtl->name, slice);
             }
             else{
+                printf("%s : %s", tempMtl->name, tempMtl->map_BumpPath);
                 insert(hm, tempMtl->name, tempMtl, sizeof(material));
                 free(tempMtl);
                 tempMtl = malloc(sizeof(material));
@@ -74,50 +77,70 @@ void parseMtl(object* obj, hashMap* hm){
         if(strcmp(temp, "d") == 0){
             char* endptr;
             char* slice = buf+ 2;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->d = strtof(slice, &endptr); 
         }
         if(strcmp(temp, "illum") == 0){
             char* endptr;
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->d = strtol(slice, &endptr, 10);
         }
         if(strcmp(temp, "map_Kd") == 0){
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_KdPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Ka") == 0){
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_KdPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KaPath, slice);
         }
         if(strcmp(temp, "map_Ks") == 0){
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_KdPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KsPath, slice);
         }
         if(strcmp(temp, "map_Ke") == 0){
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_KePath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Kt") == 0){
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_KtPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Ns") == 0){
             char* slice = buf + 6;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_NsPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_refl") == 0){
             char* slice = buf + 8;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_reflPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_KdPath, slice);
         }
         if(strcmp(temp, "map_Bump") == 0){
             char* slice = buf + 8;
+            char* p = strchr(slice, '\n');
+            if (p) *p = '\0';
             tempMtl->map_BumpPath = malloc(strlen(slice) + 1);
             strcpy(tempMtl->map_BumpPath, slice);
         }
@@ -125,8 +148,9 @@ void parseMtl(object* obj, hashMap* hm){
         memset(temp, 0, sizeof(temp));
     }
     if(tempMtl != NULL){
+        printf("%s", tempMtl->name);
         insert(hm, tempMtl->name, tempMtl, sizeof(material));
-        value* val = lookUp(hm, tempMtl->name);
+        //value* val = lookUp(hm, tempMtl->name);
         free(tempMtl);
     }
     fclose(file);
