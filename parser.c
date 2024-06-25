@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "privateFunctions.h"
+#include "privateFunctions.c"
 
 //done with hasty copy and paste, at a later date, might wanna double check this guy
 object* parseNoMTL(char* path){

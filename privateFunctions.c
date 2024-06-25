@@ -1,5 +1,5 @@
 //#include "types.h"
-#include "privateMtlFunctions.h"
+#include "privateMtlFunctions.c"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
