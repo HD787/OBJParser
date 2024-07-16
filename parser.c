@@ -4,14 +4,14 @@
 
 //done with hasty copy and paste, at a later date, might wanna double check this guy
 object* parseNoMTL(char* path){
-   object* obj = malloc(sizeof(object));
+    object* obj = malloc(sizeof(object));
     setFlags(path, obj);
     size(path, obj); 
     obj->vertices = malloc(sizeof(float) * obj->vertexCount * obj->vertexElementCount);
     obj->textures = malloc(sizeof(float) * obj->textureCount * obj->textureElementCount);
     obj->normals = malloc(sizeof(float) * obj->normalCount * obj->normalElementCount);
     obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
-    obj->materialIndices = malloc(sizeof(materialIndex) * obj->materialIndexCount);
+    // obj->materialIndices = malloc(sizeof(materialIndex) * obj->materialIndexCount);
 
     //wrap this in a struct??
     int vectorCurrentIndex = 0, 
@@ -19,7 +19,7 @@ object* parseNoMTL(char* path){
         textureCurrentIndex = 0,
         //keeps track of place in face array 
         faceCurrentIndex = 0, 
-        materialIndexCurrentIndex = 0,
+        // materialIndexCurrentIndex = 0,
         //this is keeps track of a full face object, so a tri is one and a quad is two
         //so if you multiply this number by the length of faceElementCount you'll get the right index
         faceCountCurrentIndex = 0;
@@ -28,7 +28,6 @@ object* parseNoMTL(char* path){
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
-        fclose(file);
         return NULL;
     }
     char buf[100];
@@ -64,26 +63,26 @@ object* parseNoMTL(char* path){
 
         //defines material to be used until another is specified
 
-        if(strcmp(temp, "usemtl") == 0){
-            //faceCurrentIndex can be passed in directly as it's not modified
-            char* temp = buf;
-            char* p = strchr(temp, '\n');
-            if (p) *p = '\0';
-            temp += 7;
-            //printf("%s\n", temp);
-            makeMaterialIndex(temp, faceCountCurrentIndex, &materialIndexCurrentIndex, obj);
-        }
+        // if(strcmp(temp, "usemtl") == 0){
+        //     //faceCurrentIndex can be passed in directly as it's not modified
+        //     char* temp = buf;
+        //     char* p = strchr(temp, '\n');
+        //     if (p) *p = '\0';
+        //     temp += 7;
+        //     //printf("%s\n", temp);
+        //     makeMaterialIndex(temp, faceCountCurrentIndex, &materialIndexCurrentIndex, obj);
+        // }
 
         //smooth shading??
         if(strcmp(temp, "s") == 0){}
 
-        if(strcmp(temp, "mtllib") == 0){
-            char* slice = buf + 7;
-            obj->mtlPath = malloc(strlen(slice));
-            strcpy(obj->mtlPath, slice);
-            char* p = strchr(obj->mtlPath, '\n');
-            if (p) *p = '\0';
-        }
+        // if(strcmp(temp, "mtllib") == 0){
+        //     char* slice = buf + 7;
+        //     obj->mtlPath = malloc(strlen(slice));
+        //     strcpy(obj->mtlPath, slice);
+        //     char* p = strchr(obj->mtlPath, '\n');
+        //     if (p) *p = '\0';
+        // }
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
     }
@@ -116,7 +115,6 @@ object* parse(char* path){
     FILE* file = fopen(path, "r");
     if(file == NULL){
         printf("no file :(");
-        fclose(file);
         return NULL;
     }
     char buf[100];
