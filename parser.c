@@ -11,7 +11,6 @@ object* parseNoMTL(char* path){
     obj->textures = malloc(sizeof(float) * obj->textureCount * obj->textureElementCount);
     obj->normals = malloc(sizeof(float) * obj->normalCount * obj->normalElementCount);
     obj->faces = malloc(sizeof(float) * obj->faceCount * obj->faceElementCount);
-    obj->materialIndices = malloc(sizeof(materialIndex) * obj->materialIndexCount);
 
     //wrap this in a struct??
     int vectorCurrentIndex = 0, 
@@ -65,24 +64,12 @@ object* parseNoMTL(char* path){
         //defines material to be used until another is specified
 
         if(strcmp(temp, "usemtl") == 0){
-            //faceCurrentIndex can be passed in directly as it's not modified
-            char* temp = buf;
-            char* p = strchr(temp, '\n');
-            if (p) *p = '\0';
-            temp += 7;
-            //printf("%s\n", temp);
-            makeMaterialIndex(temp, faceCountCurrentIndex, &materialIndexCurrentIndex, obj);
         }
 
         //smooth shading??
         if(strcmp(temp, "s") == 0){}
 
         if(strcmp(temp, "mtllib") == 0){
-            char* slice = buf + 7;
-            obj->mtlPath = malloc(strlen(slice));
-            strcpy(obj->mtlPath, slice);
-            char* p = strchr(obj->mtlPath, '\n');
-            if (p) *p = '\0';
         }
         memset(buf, 0, sizeof(buf));
         memset(temp, 0, sizeof(temp));
@@ -198,6 +185,14 @@ void delete(object* obj){
         free(obj->materialIndices[i].materialName);
     }
     free(obj->materialIndices);
+    free(obj);
+}
+
+void deleteObjNoMtl(object* obj){
+    free(obj->vertices);
+    free(obj->textures);
+    free(obj->normals);
+    free(obj->faces);
     free(obj);
 }
 
